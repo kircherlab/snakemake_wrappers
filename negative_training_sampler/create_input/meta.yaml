@@ -1,0 +1,4 @@
+name: create_input
+description: combines positives and negatives and creates an input
+authors:
+  - Max Schubach

@@ -1,0 +1,4 @@
+name: uniprobe2meme
+description: Read a UNIPROBE (concatenated) matrix file and convert to MEME format.
+authors:
+  - Max Schubach
