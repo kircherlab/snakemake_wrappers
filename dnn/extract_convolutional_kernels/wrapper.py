@@ -15,7 +15,7 @@ f = h5py.File(snakemake.input[0], 'r')
 
 # must be saved under conv1/conv1/kernel:0 I have no idea if this will generalize
 kernels = np.array(f[snakemake.params[0]][snakemake.params[0]]['kernel:0'])
-print(kernels.shape)
+
 # function to save a motif
 def writeMotif(file, motif, name):
     motif = motif.T
@@ -35,7 +35,7 @@ else:
 alphabet = [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]
 prod = product(alphabet,repeat=kernels.shape[0])
 prod = np.array(list(prod))
-print(prod.shape)
+
 
 
 # output file. Not compressed. plain text
