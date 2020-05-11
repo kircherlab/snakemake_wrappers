@@ -13,5 +13,6 @@ shell(
     "-g {snakemake.input[0]} "
     "-w {snakemake.params[0]} -s {snakemake.params[1]} | "
     "awk -v 'OFS=\\t' '{{print $0,0}}' | "
+    "sort -k1,1 -k2,2n | "
     "bgzip -c > {snakemake.output[0]}"
 )
