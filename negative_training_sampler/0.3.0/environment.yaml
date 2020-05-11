@@ -2,5 +2,5 @@ channels:
   - bioconda
   - conda-forge
 dependencies:
-  - bedtools ==2.29.2
   - htslib
+  - negative_training_sampler ==0.3.0
