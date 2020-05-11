@@ -14,9 +14,9 @@ memory = "2GB"
 seed = ''
 
 if len(snakemake.params) != 0:
-    if "memory" in snakemake.params:
+    if "memory" in snakemake.params.keys():
         memory = snakemake.params["memory"]
-    if "seed" in snakemake.params:
+    if "seed" in snakemake.params.keys():
         seed = "--seed " + snakemake.params["seed"] + " "
 
 log = ''
