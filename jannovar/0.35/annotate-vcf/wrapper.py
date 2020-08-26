@@ -9,5 +9,5 @@ from snakemake.shell import shell
 
 
 shell(
-    "jannovar annotate-vcf -d {snakemake.params.d} -o {snakemake.output.o}"
+    "jannovar annotate-vcf -d {snakemake.input.d} -i {snakemake.input.i} -o {snakemake.output.o}"
 )
