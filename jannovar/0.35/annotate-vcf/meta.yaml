@@ -1,0 +1,4 @@
+name: annotate-vcf
+description: Annotate a VCF file with jannovar. version 0.35
+authors:
+  - Max Schubach
