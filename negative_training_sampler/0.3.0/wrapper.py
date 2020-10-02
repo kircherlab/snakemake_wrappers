@@ -13,15 +13,16 @@ threads = 1 if snakemake.threads <= 1 else snakemake.threads
 memory = "2GB"
 seed = ''
 
+
 if len(snakemake.params) != 0:
     if "memory" in snakemake.params.keys():
         memory = snakemake.params["memory"]
     if "seed" in snakemake.params.keys():
-        seed = "--seed " + snakemake.params["seed"] + " "
+        seed = "--seed %d " % int(snakemake.params["seed"])
 
 log = ''
 if snakemake.log != 0:
-    log = "--log " + snakemake.log[0] + " "
+    log = "--log %s " % snakemake.log[0]
 
 shell(
     "negative_training_sampler -i {snakemake.input[0]} "

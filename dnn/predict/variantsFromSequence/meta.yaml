@@ -1,0 +1,4 @@
+name: variantsFromSequence
+description: predicts the delta (alt-ref) from variants with a DNN model trained with sequences
+authors:
+  - Max Schubach
