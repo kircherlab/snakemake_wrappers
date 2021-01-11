@@ -47,7 +47,7 @@ altMinusRef = "--refminusalt"
 if "altMinusRef" in snakemake.params.keys():
     altMinusRef = "--altminusref" if snakemake.params["altMinusRef"] else "--refminusalt"
 if "fileType" in snakemake.params.keys():
-    fileType = "--file-type %s" snakemake.params["fileType"]
+    fileType = "--file-type %s" % snakemake.params["fileType"]
 else:
     raise MissingParameterException("fileType")
 
