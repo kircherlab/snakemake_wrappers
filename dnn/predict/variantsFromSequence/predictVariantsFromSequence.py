@@ -66,6 +66,7 @@ import pybedtools
 
 def cli(variants_file, model_file, weights_file, reference_file, genome_file, altMinusRef, fileType, output_file):
 
+    strategy = tf.distribute.MirroredStrategy()
     def loadAndPredict(sequences, model, variants=None):
         X=[]
         i = 0
