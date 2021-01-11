@@ -67,9 +67,9 @@ import pybedtools
 def cli(variants_file, model_file, weights_file, reference_file, genome_file, altMinusRef, fileType, output_file):
 
     if fileType == "TSV":
-        fileType == utils.fileType.TSV
+        fileType == utils.FileType.TSV
     elif fileType == "VCF":
-        fileType == utils.fileType.VCF
+        fileType == utils.FileType.VCF
 
     def loadAndPredict(sequences, model, variants=None):
         X=[]
