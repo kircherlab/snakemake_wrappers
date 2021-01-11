@@ -66,11 +66,6 @@ import pybedtools
 
 def cli(variants_file, model_file, weights_file, reference_file, genome_file, altMinusRef, fileType, output_file):
 
-    if fileType == "TSV":
-        fileType == utils.FileType.TSV
-    elif fileType == "VCF":
-        fileType == utils.FileType.VCF
-
     def loadAndPredict(sequences, model, variants=None):
         X=[]
         i = 0
@@ -92,9 +87,13 @@ def cli(variants_file, model_file, weights_file, reference_file, genome_file, al
 
     def pybedtoolsIntervalToInterval(interval_pybed):
         return(Interval(interval_pybed.chrom, interval_pybed.start+1, interval_pybed.stop))
+    
+    if fileType == "TSV":
+        fileType = utils.FileType.TSV
+    elif fileType == "VCF":
+        fileType = utils.FileType.VCF
 
     # load variants
-    click.echo(type(variants_file))
     variants = []
     for variant_input in variants_file:
         variants += utils.VariantIO.loadVariants(variant_input, fileType=fileType)
