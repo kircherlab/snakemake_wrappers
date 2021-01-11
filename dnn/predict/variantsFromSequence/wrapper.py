@@ -42,14 +42,12 @@ class MissingInputException(Exception):
         return("Input %s is missing!" % (self.input))
 
 altMinusRef = "--refminusalt"
-
+fileType = "--file-type TSV"
 
 if "altMinusRef" in snakemake.params.keys():
     altMinusRef = "--altminusref" if snakemake.params["altMinusRef"] else "--refminusalt"
 if "fileType" in snakemake.params.keys():
     fileType = "--file-type %s" % snakemake.params["fileType"]
-else:
-    raise MissingParameterException("fileType")
 
 if "variants" in snakemake.input.keys():
     raise MissingInputException("variants")
