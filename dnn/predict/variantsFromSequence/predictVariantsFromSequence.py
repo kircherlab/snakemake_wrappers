@@ -93,18 +93,17 @@ def cli(variants_file, model_file, weights_file, reference_file, genome_file, al
     def pybedtoolsIntervalToInterval(interval_pybed):
         return(Interval(interval_pybed.chrom, interval_pybed.start+1, interval_pybed.stop))
 
-        # load variants
-    variant_inputs = variants_file if isinstance(variants_file, list) else [variants_file]
-
+    # load variants
+    click.echo(type(variants_file))
     variants = []
-    for variant_input in variant_inputs:
+    for variant_input in variants_file:
         variants += utils.VariantIO.loadVariants(variant_input, fileType=fileType)
     if len(variants) == 0:
-        with gzip.open(output, 'wt') as score_file:
+        with gzip.open(output_file, 'wt') as score_file:
             names=["#Chr","Pos","Ref","Alt"]
             score_writer = csv.DictWriter(score_file, fieldnames=names, delimiter='\t')
             score_writer.writeheader()
-        exit()
+        exit(0)
     # convert to intervals (pybedtools)
     intervals = pybedtools.BedTool(list(map(variantToPybedtoolsInterval,variants)))
 
