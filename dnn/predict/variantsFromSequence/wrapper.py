@@ -9,6 +9,21 @@ from snakemake.shell import shell
 
 scriptFolder = os.path.dirname(os.path.abspath(__file__))
 
+class MissingParameterException(Exception):
+    """Exception raised for errors in the parameter input.
+
+    Args:
+        Exception ([type]): Exception class cast
+
+    Attributes:
+        parameter (string): Parameter which is missing.
+    """
+
+    def __init__(self, parameter):
+        self.parameter = parameter
+
+    def __str__(self):
+        return("Parameter %s is missing!" % (self.parameter))
 
 class MissingInputException(Exception):
     """Exception raised for errors in the input.
@@ -28,8 +43,13 @@ class MissingInputException(Exception):
 
 altMinusRef = "--refminusalt"
 
+
 if "altMinusRef" in snakemake.params.keys():
     altMinusRef = "--altminusref" if snakemake.params["altMinusRef"] else "--refminusalt"
+if "fileType" in snakemake.params.keys():
+    fileType = "--file-type %s" snakemake.params["fileType"]
+else:
+    raise MissingParameterException("fileType")
 
 if "variants" in snakemake.input.keys():
     raise MissingInputException("variants")
