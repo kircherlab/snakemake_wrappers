@@ -69,8 +69,7 @@ shell(
     --variants {snakemake.variants} \
     --model {snakemake.model} --weights {snakemake.weights} \
     --reference {snakemake.reference} --genome {snakemake.genome} \
-    {altMinusRef}
+    {altMinusRef} {fileType} \
     --output {snakemake.output}"
     """
 )
-

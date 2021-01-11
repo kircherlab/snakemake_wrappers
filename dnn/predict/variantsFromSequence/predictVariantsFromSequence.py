@@ -50,9 +50,9 @@ import pybedtools
               default = False,
               show_default=True,
               help='Creating delta by alt minus ref or ref minus alt. default: altminusref')
-@click.option('--filte-type,
+@click.option('--filte-type',
               'filetype',
-              type=click.Choice(['TSV', 'VCF'], case_sensitive=False))
+              type=click.Choice(['TSV', 'VCF'], case_sensitive=False),
               default = "TSV",
               show_default=True,
               help='Variant file type.')
@@ -67,25 +67,25 @@ import pybedtools
 def cli(variants_file, model_file, weights_file, reference_file, genome_file, altMinusRef, fileType, output):
 
     if fileType == "TSV":
-    fileType == utils.fileType.TSV
+        fileType == utils.fileType.TSV
     elif fileType == "VCF":
-    fileType == utils.fileType.VCF
+        fileType == utils.fileType.VCF
 
     def loadAndPredict(sequences, model, variants=None):
-    X=[]
-    i = 0
-    for sequence in sequences:
-        if (variants is not None):
-            sequence.replace(variants[i])
-        X.append(Encoder.one_hot_encode_along_channel_axis(sequence.getSequence()))
-        i += 1
-    prediction = model.predict(np.array(X))
-    return(prediction)
+        X=[]
+        i = 0
+        for sequence in sequences:
+            if (variants is not None):
+                sequence.replace(variants[i])
+            X.append(Encoder.one_hot_encode_along_channel_axis(sequence.getSequence()))
+            i += 1
+        prediction = model.predict(np.array(X))
+        return(prediction)
 
     def extendIntervals(intervals, region_length, genome_file):
         left=math.ceil((region_length-1)/2)
         right=math.floor((region_length-1)/2)
-        return(list(map(pybedtoolsIntervalToInterval,intervals.slop(r=right,l=left,g=str(genome_file))))
+        return(list(map(pybedtoolsIntervalToInterval,intervals.slop(r=right,l=left,g=str(genome_file)))))
 
     def variantToPybedtoolsInterval(variant):
         return(pybedtools.Interval(variant.contig, variant.position-1, variant.position))
