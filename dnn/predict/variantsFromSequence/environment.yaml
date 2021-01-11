@@ -3,6 +3,7 @@ channels:
   - conda-forge
 dependencies:
   - numpy
+  - click
   - pyfaidx
   - pybedtools
   - tensorflow-gpu=2.2.0
