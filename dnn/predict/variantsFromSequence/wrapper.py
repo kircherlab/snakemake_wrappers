@@ -49,15 +49,15 @@ if "altMinusRef" in snakemake.params.keys():
 if "fileType" in snakemake.params.keys():
     fileType = "--file-type %s" % snakemake.params["fileType"]
 
-if "variants" in snakemake.input.keys():
+if "variants" not in snakemake.input.keys():
     raise MissingInputException("variants")
-if "model" in snakemake.input.keys():
+if "model" not in snakemake.input.keys():
     raise MissingInputException("model")
-if "weights" in snakemake.input.keys():
+if "weights" not in snakemake.input.keys():
     raise MissingInputException("weights")
-if "reference" in snakemake.input.keys():
+if "reference" not in snakemake.input.keys():
     raise MissingInputException("reference")
-if "genome" in snakemake.input.keys():
+if "genome" not in snakemake.input.keys():
     raise MissingInputException("genome")
 
 
