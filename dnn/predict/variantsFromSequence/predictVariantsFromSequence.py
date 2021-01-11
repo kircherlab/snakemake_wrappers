@@ -50,7 +50,7 @@ import pybedtools
               default = False,
               show_default=True,
               help='Creating delta by alt minus ref or ref minus alt. default: altminusref')
-@click.option('--filte-type',
+@click.option('--file-type',
               'filetype',
               type=click.Choice(['TSV', 'VCF'], case_sensitive=False),
               default = "TSV",
