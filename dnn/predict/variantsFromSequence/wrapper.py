@@ -64,9 +64,9 @@ if "genome" not in snakemake.input.keys():
 shell(
     """
     python {scriptFolder}/predictVariantsFromSequence.py \
-    --variants {snakemake.variants} \
-    --model {snakemake.model} --weights {snakemake.weights} \
-    --reference {snakemake.reference} --genome {snakemake.genome} \
+    --variants {snakemake.input.variants} \
+    --model {snakemake.input.model} --weights {snakemake.input.weights} \
+    --reference {snakemake.input.reference} --genome {snakemake.input.genome} \
     {altMinusRef} {fileType} \
     --output {snakemake.output}"
     """
