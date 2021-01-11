@@ -4,6 +4,7 @@ __email__ = "Max Schubach"
 __license__ = "MIT"
 
 
+import sys
 import numpy as np
 import json
 import csv
@@ -23,9 +24,17 @@ import pybedtools
 
 
 altMinusRef = True
+fileType = utils.FileType.TSV
 if len(snakemake.params) > 0:
     if hasattr(snakemake.params,"altMinusRef"):
         altMinusRef = snakemake.params['altMinusRef']
+    if hasattr(snakemake.params,"fileType"):
+        if snakemake.params['fileType'] == "TSV":
+            fileType = utils.FileType.TSV
+        elif snakemake.params['fileType'] == "VCF":
+            fileType = utils.FileType.VCF
+        else:
+            sys.exit("Unknown file format identifier %s. Can only be VCF or TSV" % snakemake.params['fileType'])
 
 strategy = tf.distribute.MirroredStrategy()
 
@@ -52,12 +61,26 @@ def pybedtoolsIntervalToInterval(interval_pybed):
     return(Interval(interval_pybed.chrom, interval_pybed.start+1, interval_pybed.stop))
 
 # load variants
-variants = utils.VariantIO.loadVariants(snakemake.input.variants, fileType=utils.FileType.TSV)
+variant_inputs = snakemake.input.variants if isinstance(snakemake.input.variants, list) else [snakemake.input.variants]
+
+variants = []
+for variant_input in variant_inputs:
+    variants += utils.VariantIO.loadVariants(variant_input, fileType=fileType)
+if len(variants) == 0:
+    with gzip.open(snakemake.output.prediction, 'wt') as score_file:
+        names=["#Chr","Pos","Ref","Alt"]
+        score_writer = csv.DictWriter(score_file, fieldnames=names, delimiter='\t')
+        score_writer.writeheader()
+    exit()
 # convert to intervals (pybedtools)
 intervals = pybedtools.BedTool(list(map(variantToPybedtoolsInterval,variants)))
 
+## maybe input is list or string. convert to list
+model_file = snakemake.input.model if isinstance(snakemake.input.model, list) else [snakemake.input.model ]
+weights_file = snakemake.input.weights if isinstance(snakemake.input.weights, list) else [snakemake.input.weights]
+
 with strategy.scope():
-    model = utils.io.ModelIO.loadModel(str(snakemake.input.model), str(snakemake.input.weights))
+    model = utils.io.ModelIO.loadModel(model_file[0], weights_file[0])
 
     input_length = model.input_shape[1]
     intervals = extendIntervals(intervals, input_length)

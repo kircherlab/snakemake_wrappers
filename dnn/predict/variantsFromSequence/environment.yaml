@@ -6,5 +6,4 @@ dependencies:
   - pyfaidx
   - pybedtools
   - tensorflow-gpu=2.2.0
-  - pip:
-      - seqiolib
+  - seqiolib
