@@ -64,7 +64,7 @@ import pybedtools
 
 
 
-def cli(variants_file, model_file, weights_file, reference_file, genome_file, altMinusRef, fileType, output):
+def cli(variants_file, model_file, weights_file, reference_file, genome_file, altMinusRef, fileType, output_file):
 
     if fileType == "TSV":
         fileType == utils.fileType.TSV
@@ -170,7 +170,7 @@ def cli(variants_file, model_file, weights_file, reference_file, genome_file, al
         results_ref = loadAndPredict(sequences_ref,model)
         results_alt = loadAndPredict(sequences_alt,model)
 
-    with gzip.open(output, 'wt') as score_file:
+    with gzip.open(output_file, 'wt') as score_file:
         names=["#Chr","Pos","Ref","Alt"]
         for task in range(results_ref.shape[1]):
             names += ["Task_%d_PredictionDelta" % task, "Task_%d_PredictionRef" % task,"Task_%d_PredictionAlt" % task]
