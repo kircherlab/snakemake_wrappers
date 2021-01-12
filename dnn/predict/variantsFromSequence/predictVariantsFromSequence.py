@@ -81,6 +81,7 @@ def cli(variants_file, model_file, weights_file, reference_file, genome_file, al
     def extendIntervals(intervals, region_length, genome_file):
         left=math.ceil((region_length-1)/2)
         right=math.floor((region_length-1)/2)
+        click.echo("Extending intervals left=%d, right=%d..." % (left,right))
         return(list(map(pybedtoolsIntervalToInterval,intervals.slop(r=right,l=left,g=str(genome_file)))))
 
     def variantToPybedtoolsInterval(variant):
@@ -95,22 +96,28 @@ def cli(variants_file, model_file, weights_file, reference_file, genome_file, al
         fileType = utils.FileType.VCF
 
     # load variants
+    click.echo("Loading variants...")
     variants = []
     for variant_input in variants_file:
         variants += utils.VariantIO.loadVariants(variant_input, fileType=fileType)
+    click.echo("Found %d variants" % len(variants))
     if len(variants) == 0:
+        click.echo("No variants found. Writing file with header only and exiting...")
         with gzip.open(output_file, 'wt') as score_file:
             names=["#Chr","Pos","Ref","Alt"]
             score_writer = csv.DictWriter(score_file, fieldnames=names, delimiter='\t')
             score_writer.writeheader()
         exit(0)
     # convert to intervals (pybedtools)
+    click.echo("Convert to bed tools intervals...")
     intervals = pybedtools.BedTool(list(map(variantToPybedtoolsInterval,variants)))
 
     with strategy.scope():
+        click.echo("Load model...")
         model = utils.io.ModelIO.loadModel(model_file, weights_file)
 
         input_length = model.input_shape[1]
+        click.echo("Detecting interval length of %d" % input_length)
         intervals = extendIntervals(intervals, input_length, genome_file)
 
             # load sequence for variants
@@ -118,6 +125,7 @@ def cli(variants_file, model_file, weights_file, reference_file, genome_file, al
         sequences_ref = []
         sequences_alt = []
 
+        click.echo("Load reference and try to get ref and alt.")
         for i in range(len(variants)):
             variant = variants[i]
             interval = intervals[i]
@@ -125,7 +133,7 @@ def cli(variants_file, model_file, weights_file, reference_file, genome_file, al
             # can be problematic if we are on the edges of a chromose.
             # Workaround. It is possible to extend the intreval left or right to get the correct length
             if (interval.length != input_length):
-                print("Cannot use variant %s because of wrong size of interval %s " % (str(variant), str(interval)))
+                click.echo("Cannot use variant %s because of wrong size of interval %s " % (str(variant), str(interval)))
                 continue
 
             sequence_ref = utils.io.SequenceIO.readSequence(reference,interval)
@@ -165,8 +173,9 @@ def cli(variants_file, model_file, weights_file, reference_file, genome_file, al
                 sequence_alt.replace(variant)
                 sequences_alt.append(sequence_alt)
                 sequences_ref.append(sequence_ref)
-
+        click.echo("Predict reference...")
         results_ref = loadAndPredict(sequences_ref,model)
+        click.echo("Predict alternative...")
         results_alt = loadAndPredict(sequences_alt,model)
 
     with gzip.open(output_file, 'wt') as score_file:
