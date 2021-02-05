@@ -135,7 +135,7 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
         intervals = tilingIntervals(intervals, regions, input_length, edge)
 
         for i in intervals:
-            print(intervals)
+            print(i)
 
     #     # load sequence for variants
     #     reference = Fasta(reference_file)
