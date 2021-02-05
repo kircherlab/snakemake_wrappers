@@ -90,7 +90,7 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
         output = []
         for i, interval in enumerate(intervals):
             if regions[i].isReverse():
-                interval = Interval(interval.contig, interval.end, interval.start)
+                interval = Interval(interval.contig, interval.end(), interval.start())
             output = output + interval.tiling(length=region_length, shift=region_length-edge)
         return(output)
 
