@@ -134,7 +134,8 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
         click.echo("Tiling the interval of length %d ans shift %d" % (input_length, input_length-edge))
         intervals = tilingIntervals(intervals, regions, input_length, edge)
 
-        print(intervals)
+        for i in intervals:
+            print(intervals)
 
     #     # load sequence for variants
     #     reference = Fasta(reference_file)
