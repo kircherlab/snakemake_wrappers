@@ -1,0 +1,9 @@
+channels:
+- bioconda
+- conda-forge
+dependencies:
+ - python=3.7
+ - pandas 
+ - numpy 
+ - seqiolib 
+ - tensorflow-gpu=2.2.0 
