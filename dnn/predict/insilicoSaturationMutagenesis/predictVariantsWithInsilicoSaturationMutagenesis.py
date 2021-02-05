@@ -77,6 +77,8 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
         return(prediction)
 
     def extendIntervals(intervals, region_length, edge, genome_file):
+        print(genome_file)
+        print("AAAAAHHHH")
         output = []
         for interval in intervals:
             print(interval)
