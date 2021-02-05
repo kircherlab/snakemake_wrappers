@@ -86,6 +86,8 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
             print(extend)
             left = math.ceil((extend-1)/2)
             right = math.floor((extend-1)/2)
+            print(left)
+            print(right)
             output = output + list(map(pybedtoolsIntervalToInterval,
                                        pybedtools.BedTool([interval]).slop(r=right, l=left, g=str(genome_file))))
         return(output)
