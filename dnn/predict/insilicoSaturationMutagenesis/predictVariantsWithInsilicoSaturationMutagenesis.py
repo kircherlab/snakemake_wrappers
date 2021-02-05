@@ -79,7 +79,7 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
     def extendIntervals(intervals, region_length, edge, genome_file):
         output = []
         for interval in intervals:
-            extend = (interval.length + edge*2) % region_length
+            extend = (region_length + edge*2) % region_length
             left = math.ceil((extend-1)/2)
             right = math.floor((extend-1)/2)
             output = output + list(map(pybedtoolsIntervalToInterval,
@@ -95,6 +95,7 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
         return(output)
 
     def regionToPybedtoolsInterval(region):
+        print(region)
         if (region.isReverse):
             return(pybedtools.Interval(region.contig, region.end()-1, region.start(), strand="-"))
         else:
