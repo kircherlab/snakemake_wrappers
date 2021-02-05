@@ -107,7 +107,7 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
     click.echo("Loading regions...")
     regions = []
     for region_file in regions_file:
-        regions += utils.io.IntervalIO.getIntervals.getIntervals(region_file)
+        regions += utils.io.IntervalIO.getIntervals(region_file)
     click.echo("Found %d regions" % len(regions))
     if len(regions) == 0:
         click.echo(
