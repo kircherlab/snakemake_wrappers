@@ -79,7 +79,9 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
     def extendIntervals(intervals, region_length, edge, genome_file):
         output = []
         for interval in intervals:
-            extend = (region_length + edge*2) % region_length
+            print(interval)
+            extend = (interval.length + edge*2) % region_length
+            print(extend)
             left = math.ceil((extend-1)/2)
             right = math.floor((extend-1)/2)
             output = output + list(map(pybedtoolsIntervalToInterval,
