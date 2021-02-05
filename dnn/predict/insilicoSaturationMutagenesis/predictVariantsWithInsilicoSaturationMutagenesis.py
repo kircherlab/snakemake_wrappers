@@ -95,8 +95,8 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
         return(output)
 
     def regionToPybedtoolsInterval(region):
-        print(region)
         if (region.isReverse):
+            print(region)
             return(pybedtools.Interval(region.contig, region.end()-1, region.start(), strand="-"))
         else:
             return(pybedtools.Interval(region.contig, region.start()-1, region.end(), strand="+"))
