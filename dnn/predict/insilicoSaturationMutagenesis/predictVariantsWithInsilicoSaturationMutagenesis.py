@@ -108,6 +108,8 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
     regions = []
     for region_file in regions_file:
         regions += utils.io.IntervalIO.getIntervals(region_file)
+    for i in regions:
+        print(i)
     click.echo("Found %d regions" % len(regions))
     if len(regions) == 0:
         click.echo(
@@ -121,6 +123,8 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
     # convert to intervals (pybedtools)
     click.echo("Convert to bed tools intervals...")
     intervals = pybedtools.BedTool(list(map(regionToPybedtoolsInterval, regions)))
+    for i in intervals:
+        print(i)
 
     with strategy.scope():
         click.echo("Load model...")
@@ -130,6 +134,9 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
 
         click.echo("Extend intervals to fit tiling...")
         intervals = extendIntervals(intervals, input_length, edge, genome_file)
+
+        for i in intervals:
+            print(i)
 
         click.echo("Tiling the interval of length %d ans shift %d" % (input_length, input_length-edge))
         intervals = tilingIntervals(intervals, regions, input_length, edge)
