@@ -80,6 +80,8 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
         output = []
         for interval in intervals:
             print(interval)
+            print(interval.length)
+            print(region_length)
             extend = (interval.length + edge*2) % region_length
             print(extend)
             left = math.ceil((extend-1)/2)
