@@ -50,17 +50,18 @@ import pybedtools
               default=False,
               show_default=True,
               help='Creating delta by alt minus ref or ref minus alt. default: altminusref')
-@click.option('--edge',
-              'edge',
-              type=int,
-              default=0,
+@click.option('--edges',
+              'edges',
+              type=(int,int),
+              default=(0,0),
               show_default=True,
-              help='Edge of the input sequence not used for in-silico mutagenesis')
+              help='Left and right of the input sequence not used for in-silico mutagenesis')
 @click.option('--output',
               'output_file',
+              required=True,
               type=click.Path(writable=True),
               help='Output file with predictions in tsv.gz format.')
-def cli(regions_file, model_file, weights_file, reference_file, genome_file, altMinusRef, edge, output_file):
+def cli(regions_file, model_file, weights_file, reference_file, genome_file, altMinusRef, edges, output_file):
 
     strategy = tf.distribute.MirroredStrategy()
 
@@ -76,29 +77,34 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
         prediction = model.predict(np.array(X))
         return(prediction)
 
-    def extendIntervals(intervals, region_length, edge, genome_file):
+    def extendIntervals(regions, region_length, edges, genome_file):
+        # convert to intervals (pybedtools)
+        click.echo("Convert to bed tools intervals...")
+        intervals = pybedtools.BedTool(list(map(regionToPybedtoolsInterval, regions)))
         output = []
-        for interval in intervals:
-            print(interval)
-            print(interval.length)
-            print(region_length)
-            extend = (interval.length + edge*2) % region_length
+        shift = getShift(edges,region_length)
+        for i, interval in enumerate(intervals):
+            extended_interval = interval.length + edges[0] + edges[1]
+            extend = (shift * (interval.length//shift+1) +
+                      (region_length % shift)) % interval.length
             print(extend)
-            left = math.ceil((extend-1)/2)
-            right = math.floor((extend-1)/2)
-            print(left)
-            print(right)
-            print(pybedtools.BedTool([interval]).slop(r=right, l=left, g=str(genome_file))[0])
+            if regions[i].isReverse():
+                right = math.ceil(extend/2)+edges[0]
+                left = math.floor(extend/2)+edges[1]
+            else:
+                left = math.ceil(extend/2)+edges[0]
+                right = math.floor(extend/2)+edges[1]
             output = output + list(map(pybedtoolsIntervalToInterval,
                                        pybedtools.BedTool([interval]).slop(r=right, l=left, g=str(genome_file))))
+            for i in output:
+                print(i)
         return(output)
 
-    def tilingIntervals(intervals, regions, region_length, edge):
-        output = []
-        for i, interval in enumerate(intervals):
-            if regions[i].isReverse():
-                interval = Interval(interval.contig, interval.end(), interval.start())
-            output = output + interval.tiling(length=region_length, shift=region_length-edge)
+    def tilingInterval(interval, region, region_length, edges):
+        if region.isReverse():
+            interval = Interval(
+                interval.contig, interval.end(), interval.start())
+        output = interval.tiling(length=region_length, shift=getShift(edges,region_length))
         return(output)
 
     def regionToPybedtoolsInterval(region):
@@ -109,14 +115,15 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
 
     def pybedtoolsIntervalToInterval(interval_pybed):
         return(Interval(interval_pybed.chrom, interval_pybed.start+1, interval_pybed.stop))
+    
+    def getShift(edge, length):
+        return(length-(edge[0]+edge[1]))
 
     # load regions
     click.echo("Loading regions...")
     regions = []
     for region_file in regions_file:
         regions += utils.io.IntervalIO.getIntervals(region_file)
-    for i in regions:
-        print(i)
     click.echo("Found %d regions" % len(regions))
     if len(regions) == 0:
         click.echo(
@@ -127,11 +134,8 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
                 score_file, fieldnames=names, delimiter='\t')
             score_writer.writeheader()
         exit(0)
-    # convert to intervals (pybedtools)
-    click.echo("Convert to bed tools intervals...")
-    intervals = pybedtools.BedTool(list(map(regionToPybedtoolsInterval, regions)))
-    for i in intervals:
-        print(i)
+
+    reference = Fasta(reference_file)
 
     with strategy.scope():
         click.echo("Load model...")
@@ -140,98 +144,71 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
         input_length = model.input_shape[1]
 
         click.echo("Extend intervals to fit tiling...")
-        intervals = extendIntervals(intervals, input_length, edge, genome_file)
+        intervals = extendIntervals(regions, input_length, edges, genome_file)
 
-        for i in intervals:
-            print(i)
+        click.echo("Tiling the interval of length %d and shift %d" %
+                   (input_length, getShift(edges,input_length)))
+        interval_i = 0
 
-        click.echo("Tiling the interval of length %d ans shift %d" % (input_length, input_length-edge))
-        intervals = tilingIntervals(intervals, regions, input_length, edge)
+        with gzip.open(output_file, 'wt') as csvfile:
+            writer = None
 
-        for i in intervals:
-            print(i)
+            for interval in intervals:
+                click.echo("Original: %s Extended: %s" % (str(regions[interval_i]),str(interval)))
 
-    #     # load sequence for variants
-    #     reference = Fasta(reference_file)
-    #     sequences_ref = []
-    #     sequences_alt = []
+                tiled_intervals = tilingInterval(
+                    interval, regions[interval_i], input_length, edges)
 
-    #     click.echo("Load reference and try to get ref and alt.")
-    #     for i in range(len(variants)):
-    #         variant = variants[i]
-    #         interval = intervals[i]
+                click.echo("Number of tiled intervals of interval %d: %d" %
+                        (interval_i+1, len(tiled_intervals)))
+                tiled_i = 0
+                for tiled_interval in tiled_intervals:
 
-    #         # can be problematic if we are on the edges of a chromose.
-    #         # Workaround. It is possible to extend the intreval left or right to get the correct length
-    #         if (interval.length != input_length):
-    #             click.echo("Cannot use variant %s because of wrong size of interval %s " % (
-    #                 str(variant), str(interval)))
-    #             continue
+                    if tiled_i % 1000 == 0:
+                        click.echo("Number of tiled intervals %d/%d of interval %d" % (tiled_i+1, len(tiled_intervals), interval_i+1))
 
-    #         sequence_ref = utils.io.SequenceIO.readSequence(
-    #             reference, interval)
+                    click.echo("Tiled interval %s" % tiled_interval)
+                    
+                    sequence = utils.io.SequenceIO.readSequence(reference, tiled_interval)
+                    if tiled_interval.isReverse():
+                        satMutSequences, variants = sequence.saturationMutagensis(start=edges[1]+1, end=tiled_interval.length-edges[0])
+                    else:
+                        satMutSequences, variants = sequence.saturationMutagensis(start=edges[0]+1, end=tiled_interval.length-edges[1])
 
-    #         # INDEL
-    #         if (variant.type == VariantType.DELETION or variant.type == VariantType.INSERTION):
-    #             # DELETION
-    #             if (variant.type == VariantType.DELETION):
-    #                 extend = len(variant.ref) - len(variant.alt)
-    #                 if interval.isReverse():
-    #                     interval.position = interval.position + extend
-    #                 else:
-    #                     interval.position = interval.position - extend
-    #                 interval.length = interval.length + extend
-    #             # INSERTION
-    #             elif (variant.type == VariantType.INSERTION):
-    #                 extend = len(variant.alt) - len(variant.ref)
-    #                 if interval.isReverse():
-    #                     interval.position = interval.position - extend
-    #                 else:
-    #                     interval.position = interval.position + extend
-    #                 interval.length = interval.length - extend
-    #             if (interval.length > 0):
-    #                 sequence_alt = utils.io.SequenceIO.readSequence(
-    #                     reference, interval)
-    #                 sequence_alt.replace(variant)
-    #                 if (len(sequence_alt.sequence) == input_length):
-    #                     # FIXME: This is a hack. it seems that for longer indels the replacement does not work
-    #                     sequences_alt.append(sequence_alt)
-    #                     sequences_ref.append(sequence_ref)
-    #                 else:
-    #                     print("Cannot use variant %s because of wrong interval %s has wrong size after InDel Correction" % (
-    #                         str(variant), str(interval)))
-    #             else:
-    #                 print("Cannot use variant %s because interval %s has negative size" % (
-    #                     str(variant), str(interval)))
-    #         # SNV
-    #         else:
-    #             sequence_alt = copy.copy(sequence_ref)
-    #             sequence_alt.replace(variant)
-    #             sequences_alt.append(sequence_alt)
-    #             sequences_ref.append(sequence_ref)
-    #     click.echo("Predict reference...")
-    #     results_ref = loadAndPredict(sequences_ref, model)
-    #     click.echo("Predict alternative...")
-    #     results_alt = loadAndPredict(sequences_alt, model)
+                    X = []
+                    for satMutSequence in satMutSequences:
+                        X.append(Encoder.one_hot_encode_along_channel_axis(
+                            satMutSequence.getSequence()))
+                    # predict
+                    prediction = model.predict(np.array(X))
+                    n_tasks = np.shape(prediction)[1]
 
-    # with gzip.open(output_file, 'wt') as score_file:
-    #     names = ["#Chr", "Pos", "Ref", "Alt"]
-    #     for task in range(results_ref.shape[1]):
-    #         names += ["Task_%d_PredictionDelta" % task,
-    #                   "Task_%d_PredictionRef" % task, "Task_%d_PredictionAlt" % task]
-    #     score_writer = csv.DictWriter(
-    #         score_file, fieldnames=names, delimiter='\t')
-    #     score_writer.writeheader()
-    #     for i in range(results_ref.shape[0]):
-    #         out = {"#Chr": variants[i].contig, "Pos": variants[i].position,
-    #                "Ref": variants[i].ref, "Alt":  variants[i].alt}
-    #         for task in range(results_ref.shape[1]):
-    #             out["Task_%d_PredictionDelta" % task] = results_alt[i][task] - \
-    #                 results_ref[i][task] if altMinusRef else results_ref[i][task] - \
-    #                 results_alt[i][task]
-    #             out["Task_%d_PredictionRef" % task] = results_ref[i][task]
-    #             out["Task_%d_PredictionAlt" % task] = results_alt[i][task]
-    #         score_writer.writerow(out)
+                    # initialize write once
+                    if writer is None:
+                        fieldnames = ["#Chr", "Pos", "Ref", "Alt"]
+                        for task in range(n_tasks):
+                                fieldnames += ["Task_%d_PredictionDelta" % task,
+                                        "Task_%d_PredictionRef" % task, "Task_%d_PredictionAlt" % task]
+                        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter='\t')
+                        writer.writeheader()
+
+                    for i in range(len(variants)):
+                        variant=variants[i]
+                        # only write out variants that ar ein original interval
+                        if regions[interval_i].contains(variant):
+                            toWrite = {"#Chr": variant.contig,"Pos": variant.position,"Ref": variant.ref,"Alt": variant.alt}
+                            for task in range(n_tasks):
+                                results = prediction[:,task].tolist()
+                                toWrite["Task_%d_PredictionDelta" % task] = results[i+1] - \
+                                        results[0] if altMinusRef else results[0] - \
+                                        results[i+1]
+                                toWrite["Task_%d_PredictionRef" % task] = results[0]
+                                toWrite["Task_%d_PredictionAlt" % task] = results[i+1]
+                            
+                            writer.writerow(toWrite)
+
+                    tiled_i += 1
+                interval_i += 1
 
 
 if __name__ == '__main__':

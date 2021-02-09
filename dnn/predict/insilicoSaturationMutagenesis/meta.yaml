@@ -10,5 +10,6 @@ input:
   genome: genome file of the reference.
 output: List of tables with variants and their prediction
 params: 
-  notPredictedEdge: the edge e.g. 50b is not used for prediction in a sequence. meaning form a 300bp sequence only 51 to 250 bp are used.
+  leftEdge: the left edge e.g. 50b is not used for prediction in a sequence. meaning form a 300bp sequence only 51 to 300 bp are used.
+  rightEdge: the right edge e.g. 50b is not used for prediction in a sequence. meaning form a 300bp sequence only 1 to 249 bp are used
   refMinusAlt: if set ref miuns alt is used for prediction. otherwise altminusref.

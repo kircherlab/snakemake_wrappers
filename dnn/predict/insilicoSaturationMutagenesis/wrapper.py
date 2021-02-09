@@ -92,10 +92,15 @@ else:
  
 
 # Checking parameters, remove else when parameter is not necessary and add a default value
-if "notPredictedEdge" in snakemake.params.keys():
-    param_notPredictedEdge = snakemake.params["notPredictedEdge"]
+if "leftEdge" in snakemake.params.keys():
+    param_leftEdge = snakemake.params["leftEdge"]
 else:
-    raise MissingParameterException("notPredictedEdge")
+    param_leftEdge = 0
+
+if "rightEdge" in snakemake.params.keys():
+    param_rightEdge = snakemake.params["rightEdge"]
+else:
+    param_rightEdge = 0
 
 if "refMinusAlt" in snakemake.params.keys():
     altMinusRef = "--refminusalt"
@@ -107,7 +112,7 @@ else:
 shell(
     """
     python  {scriptFolder}/predictVariantsWithInsilicoSaturationMutagenesis.py \
-    --edge {param_notPredictedEdge}  {altMinusRef} \
+    --edges {param_leftEdge} {param_rightEdge} {altMinusRef} \
     --regions {input_regions} --model {input_model} --weights {input_weights} \
     --reference {input_reference} --genome {input_genome} \
     --output {output_output} 
