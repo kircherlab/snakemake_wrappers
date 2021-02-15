@@ -58,37 +58,31 @@ class MissingParameterException(Exception):
 
 
 # Checking inputs
-if "regions" in snakemake.inputs.keys():
-    input_regions = snakemake.inputs["regions"]
+if "regions" in snakemake.input.keys():
+    input_regions = snakemake.input["regions"]
 else:
     raise MissingInputException("regions")
  
-if "model" in snakemake.inputs.keys():
-    input_model = snakemake.inputs["model"]
+if "model" in snakemake.input.keys():
+    input_model = snakemake.input["model"]
 else:
     raise MissingInputException("model")
  
-if "weights" in snakemake.inputs.keys():
-    input_weights = snakemake.inputs["weights"]
+if "weights" in snakemake.input.keys():
+    input_weights = snakemake.input["weights"]
 else:
     raise MissingInputException("weights")
  
-if "reference" in snakemake.inputs.keys():
-    input_reference = snakemake.inputs["reference"]
+if "reference" in snakemake.input.keys():
+    input_reference = snakemake.input["reference"]
 else:
     raise MissingInputException("reference")
 
-if "genome" in snakemake.inputs.keys():
-    input_genome = snakemake.inputs["genome"]
+if "genome" in snakemake.input.keys():
+    input_genome = snakemake.input["genome"]
 else:
     raise MissingInputException("genome")
  
-
- # Checking outputs
-if "output" in snakemake.outputs.keys():
-    output_output = snakemake.outputs["output"]
-else:
-    raise MissingOuputException("output")
  
 
 # Checking parameters, remove else when parameter is not necessary and add a default value
@@ -115,6 +109,6 @@ shell(
     --edges {param_leftEdge} {param_rightEdge} {altMinusRef} \
     --regions {input_regions} --model {input_model} --weights {input_weights} \
     --reference {input_reference} --genome {input_genome} \
-    --output {output_output} 
+    --output {snakemake.output} 
     """
 )
