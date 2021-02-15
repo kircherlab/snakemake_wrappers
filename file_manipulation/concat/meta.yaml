@@ -1,0 +1,8 @@
+name: Concat TSV tables
+description: Concats multiple tables. Has the option to add multiple columns with String and an extra column with an extra value (e.g. identifier of file, class label, etc)
+authors:
+ - Max Schubach 
+input: Multiple TSV files with headers
+output: Concatenated files using pandas.concat
+params:
+  columns: inf the for of columnNameFile1=valueFile1,ColumnNameFile2=valueFile2,... if only one is gven it uses the column,value combination for all files
