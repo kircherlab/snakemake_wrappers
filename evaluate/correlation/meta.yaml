@@ -1,0 +1,11 @@
+name: Correlation of scores
+description: Correlate scores in two files with each other. Must have the same length and thze n entry of file a bust be the n entry of file b. If o file b is given it uses the same file. Creates pearson and spearman correlation
+authors:
+ - Max Schubach 
+input: 
+  a: File a with scores. must have headers.
+  b: (Optional) File b with socres. must have headers
+output: Pearson and spearman correlation beetween both values
+params: 
+  valueA: Name of the value in file a used fore correlation. 
+  valueB: Name of the value in file b (or a if b not set) used for correlationi.
