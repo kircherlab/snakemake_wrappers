@@ -1,0 +1,15 @@
+name: In-silico saturation mutagenesis
+description: Gets genome regions and creates a prediction with an in-silico mutagenesis. It takes the input length of the model into account and makes an appropriate tiling. You can also specify bp on the edge taht should not be used for prediction (e.g. 50bp)
+authors:
+ - Max Schubach 
+input: 
+  regions: regions for in-silico mutagenesis. 
+  model: the trained model. 
+  weights: weights of the model. 
+  reference: indexed fasta file of the genome reference.
+  genome: genome file of the reference.
+output: List of tables with variants and their prediction
+params: 
+  leftEdge: the left edge e.g. 50b is not used for prediction in a sequence. meaning form a 300bp sequence only 51 to 300 bp are used.
+  rightEdge: the right edge e.g. 50b is not used for prediction in a sequence. meaning form a 300bp sequence only 1 to 249 bp are used
+  refMinusAlt: if set ref miuns alt is used for prediction. otherwise altminusref.
