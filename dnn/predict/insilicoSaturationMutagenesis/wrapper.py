@@ -82,7 +82,7 @@ else:
     raise MissingInputException("reference")
 
 if "reference_index" in snakemake.input.keys():
-    input_reference = snakemake.input["reference_index"]
+    input_reference_index = snakemake.input["reference_index"]
 else:
     raise MissingInputException("reference_index")
 
