@@ -78,6 +78,11 @@ if "reference" in snakemake.input.keys():
 else:
     raise MissingInputException("reference")
 
+if "reference_index" in snakemake.input.keys():
+    input_reference = snakemake.input["reference_index"]
+else:
+    raise MissingInputException("reference_index")
+
 if "genome" in snakemake.input.keys():
     input_genome = snakemake.input["genome"]
 else:

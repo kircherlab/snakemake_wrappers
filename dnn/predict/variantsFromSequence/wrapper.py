@@ -57,6 +57,8 @@ if "weights" not in snakemake.input.keys():
     raise MissingInputException("weights")
 if "reference" not in snakemake.input.keys():
     raise MissingInputException("reference")
+if "reference_index" not in snakemake.input.keys():
+    raise MissingInputException("reference_index")
 if "genome" not in snakemake.input.keys():
     raise MissingInputException("genome")
 

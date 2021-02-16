@@ -7,6 +7,7 @@ input:
   model: the trained model. 
   weights: weights of the model. 
   reference: indexed fasta file of the genome reference.
+  reference_index: The index of the fasta file.
   genome: genome file of the reference.
 output: List of tables with variants and their prediction
 params: 
