@@ -8,6 +8,7 @@ from snakemake.shell import shell
 
 scriptFolder = os.path.dirname(os.path.abspath(__file__))
 
+
 class MissingInputException(Exception):
     """Exception raised for errors in the input.
 
@@ -24,6 +25,7 @@ class MissingInputException(Exception):
     def __str__(self):
         return("Input %s is missing!" % (self.inp))
 
+
 class MissingOutputException(Exception):
     """Exception raised for errors in the input.
 
@@ -39,6 +41,7 @@ class MissingOutputException(Exception):
 
     def __str__(self):
         return("Output %s is missing!" % (self.output))
+
 
 class MissingParameterException(Exception):
     """Exception raised for errors in the input.
@@ -62,17 +65,17 @@ if "regions" in snakemake.input.keys():
     input_regions = snakemake.input["regions"]
 else:
     raise MissingInputException("regions")
- 
+
 if "model" in snakemake.input.keys():
     input_model = snakemake.input["model"]
 else:
     raise MissingInputException("model")
- 
+
 if "weights" in snakemake.input.keys():
     input_weights = snakemake.input["weights"]
 else:
     raise MissingInputException("weights")
- 
+
 if "reference" in snakemake.input.keys():
     input_reference = snakemake.input["reference"]
 else:
@@ -87,8 +90,7 @@ if "genome" in snakemake.input.keys():
     input_genome = snakemake.input["genome"]
 else:
     raise MissingInputException("genome")
- 
- 
+
 
 # Checking parameters, remove else when parameter is not necessary and add a default value
 if "leftEdge" in snakemake.params.keys():

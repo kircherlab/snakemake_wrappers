@@ -52,8 +52,8 @@ import pybedtools
               help='Creating delta by alt minus ref or ref minus alt. default: altminusref')
 @click.option('--edges',
               'edges',
-              type=(int,int),
-              default=(0,0),
+              type=(int, int),
+              default=(0, 0),
               show_default=True,
               help='Left and right of the input sequence not used for in-silico mutagenesis')
 @click.option('--output',
@@ -80,9 +80,10 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
     def extendIntervals(regions, region_length, edges, genome_file):
         # convert to intervals (pybedtools)
         click.echo("Convert to bed tools intervals...")
-        intervals = pybedtools.BedTool(list(map(regionToPybedtoolsInterval, regions)))
+        intervals = pybedtools.BedTool(
+            list(map(regionToPybedtoolsInterval, regions)))
         output = []
-        shift = getShift(edges,region_length)
+        shift = getShift(edges, region_length)
         for i, interval in enumerate(intervals):
             extended_interval = interval.length + edges[0] + edges[1]
             extend = (shift * (interval.length//shift+1) +
@@ -104,7 +105,8 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
         if region.isReverse():
             interval = Interval(
                 interval.contig, interval.end(), interval.start())
-        output = interval.tiling(length=region_length, shift=getShift(edges,region_length))
+        output = interval.tiling(length=region_length,
+                                 shift=getShift(edges, region_length))
         return(output)
 
     def regionToPybedtoolsInterval(region):
@@ -115,7 +117,7 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
 
     def pybedtoolsIntervalToInterval(interval_pybed):
         return(Interval(interval_pybed.chrom, interval_pybed.start+1, interval_pybed.stop))
-    
+
     def getShift(edge, length):
         return(length-(edge[0]+edge[1]))
 
@@ -147,33 +149,38 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
         intervals = extendIntervals(regions, input_length, edges, genome_file)
 
         click.echo("Tiling the interval of length %d and shift %d" %
-                   (input_length, getShift(edges,input_length)))
+                   (input_length, getShift(edges, input_length)))
         interval_i = 0
 
         with gzip.open(output_file, 'wt') as csvfile:
             writer = None
 
             for interval in intervals:
-                click.echo("Original: %s Extended: %s" % (str(regions[interval_i]),str(interval)))
+                click.echo("Original: %s Extended: %s" %
+                           (str(regions[interval_i]), str(interval)))
 
                 tiled_intervals = tilingInterval(
                     interval, regions[interval_i], input_length, edges)
 
                 click.echo("Number of tiled intervals of interval %d: %d" %
-                        (interval_i+1, len(tiled_intervals)))
+                           (interval_i+1, len(tiled_intervals)))
                 tiled_i = 0
                 for tiled_interval in tiled_intervals:
 
                     if tiled_i % 1000 == 0:
-                        click.echo("Number of tiled intervals %d/%d of interval %d" % (tiled_i+1, len(tiled_intervals), interval_i+1))
+                        click.echo("Number of tiled intervals %d/%d of interval %d" %
+                                   (tiled_i+1, len(tiled_intervals), interval_i+1))
 
                     click.echo("Tiled interval %s" % tiled_interval)
-                    
-                    sequence = utils.io.SequenceIO.readSequence(reference, tiled_interval)
+
+                    sequence = utils.io.SequenceIO.readSequence(
+                        reference, tiled_interval)
                     if tiled_interval.isReverse():
-                        satMutSequences, variants = sequence.saturationMutagensis(start=edges[1]+1, end=tiled_interval.length-edges[0])
+                        satMutSequences, variants = sequence.saturationMutagensis(
+                            start=edges[1]+1, end=tiled_interval.length-edges[0])
                     else:
-                        satMutSequences, variants = sequence.saturationMutagensis(start=edges[0]+1, end=tiled_interval.length-edges[1])
+                        satMutSequences, variants = sequence.saturationMutagensis(
+                            start=edges[0]+1, end=tiled_interval.length-edges[1])
 
                     X = []
                     for satMutSequence in satMutSequences:
@@ -187,24 +194,28 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
                     if writer is None:
                         fieldnames = ["#Chr", "Pos", "Ref", "Alt"]
                         for task in range(n_tasks):
-                                fieldnames += ["Task_%d_PredictionDelta" % task,
-                                        "Task_%d_PredictionRef" % task, "Task_%d_PredictionAlt" % task]
-                        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter='\t')
+                            fieldnames += ["Task_%d_PredictionDelta" % task,
+                                           "Task_%d_PredictionRef" % task, "Task_%d_PredictionAlt" % task]
+                        writer = csv.DictWriter(
+                            csvfile, fieldnames=fieldnames, delimiter='\t')
                         writer.writeheader()
 
                     for i in range(len(variants)):
-                        variant=variants[i]
+                        variant = variants[i]
                         # only write out variants that ar ein original interval
                         if regions[interval_i].contains(variant):
-                            toWrite = {"#Chr": variant.contig,"Pos": variant.position,"Ref": variant.ref,"Alt": variant.alt}
+                            toWrite = {"#Chr": variant.contig, "Pos": variant.position,
+                                       "Ref": variant.ref, "Alt": variant.alt}
                             for task in range(n_tasks):
-                                results = prediction[:,task].tolist()
+                                results = prediction[:, task].tolist()
                                 toWrite["Task_%d_PredictionDelta" % task] = results[i+1] - \
-                                        results[0] if altMinusRef else results[0] - \
-                                        results[i+1]
-                                toWrite["Task_%d_PredictionRef" % task] = results[0]
-                                toWrite["Task_%d_PredictionAlt" % task] = results[i+1]
-                            
+                                    results[0] if altMinusRef else results[0] - \
+                                    results[i+1]
+                                toWrite["Task_%d_PredictionRef" %
+                                        task] = results[0]
+                                toWrite["Task_%d_PredictionAlt" %
+                                        task] = results[i+1]
+
                             writer.writerow(toWrite)
 
                     tiled_i += 1

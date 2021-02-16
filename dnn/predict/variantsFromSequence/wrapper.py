@@ -9,6 +9,7 @@ from snakemake.shell import shell
 
 scriptFolder = os.path.dirname(os.path.abspath(__file__))
 
+
 class MissingParameterException(Exception):
     """Exception raised for errors in the parameter input.
 
@@ -25,6 +26,7 @@ class MissingParameterException(Exception):
     def __str__(self):
         return("Parameter %s is missing!" % (self.parameter))
 
+
 class MissingInputException(Exception):
     """Exception raised for errors in the input.
 
@@ -40,6 +42,7 @@ class MissingInputException(Exception):
 
     def __str__(self):
         return("Input %s is missing!" % (self.input))
+
 
 altMinusRef = "--refminusalt"
 fileType = "--file-type TSV"
