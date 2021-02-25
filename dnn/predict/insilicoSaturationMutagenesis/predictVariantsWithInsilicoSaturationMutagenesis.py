@@ -50,6 +50,10 @@ import pybedtools
               default=False,
               show_default=True,
               help='Creating delta by alt minus ref or ref minus alt. default: altminusref')
+@click.option('--verbose',
+              'verbose',
+              is_flag=True,
+              help='Creating delta by alt minus ref or ref minus alt. default: altminusref')
 @click.option('--edges',
               'edges',
               type=(int, int),
@@ -61,9 +65,13 @@ import pybedtools
               required=True,
               type=click.Path(writable=True),
               help='Output file with predictions in tsv.gz format.')
-def cli(regions_file, model_file, weights_file, reference_file, genome_file, altMinusRef, edges, output_file):
+def cli(regions_file, model_file, weights_file, reference_file, genome_file, altMinusRef, verbose, edges, output_file):
 
     strategy = tf.distribute.MirroredStrategy()
+    
+    def log(message):
+        if verbose:
+            click.echo(message)
 
     def loadAndPredict(sequences, model, variants=None):
         X = []
@@ -88,7 +96,6 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
             extended_interval = interval.length + edges[0] + edges[1]
             extend = (shift * (interval.length//shift+1) +
                       (region_length % shift)) % interval.length
-            print(extend)
             if regions[i].isReverse():
                 right = math.ceil(extend/2)+edges[0]
                 left = math.floor(extend/2)+edges[1]
@@ -97,8 +104,6 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
                 right = math.floor(extend/2)+edges[1]
             output = output + list(map(pybedtoolsIntervalToInterval,
                                        pybedtools.BedTool([interval]).slop(r=right, l=left, g=str(genome_file))))
-            for i in output:
-                print(i)
         return(output)
 
     def tilingInterval(interval, region, region_length, edges):
@@ -156,22 +161,22 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
             writer = None
 
             for interval in intervals:
-                click.echo("Original: %s Extended: %s" %
+                log("Original: %s Extended: %s" %
                            (str(regions[interval_i]), str(interval)))
 
                 tiled_intervals = tilingInterval(
                     interval, regions[interval_i], input_length, edges)
 
-                click.echo("Number of tiled intervals of interval %d: %d" %
+                log("Number of tiled intervals of interval %d: %d" %
                            (interval_i+1, len(tiled_intervals)))
                 tiled_i = 0
                 for tiled_interval in tiled_intervals:
 
                     if tiled_i % 1000 == 0:
-                        click.echo("Number of tiled intervals %d/%d of interval %d" %
+                        log("Number of tiled intervals %d/%d of interval %d" %
                                    (tiled_i+1, len(tiled_intervals), interval_i+1))
 
-                    click.echo("Tiled interval %s" % tiled_interval)
+                    log("Tiled interval %s" % tiled_interval)
 
                     sequence = utils.io.SequenceIO.readSequence(
                         reference, tiled_interval)
