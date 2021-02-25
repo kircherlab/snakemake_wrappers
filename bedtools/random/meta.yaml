@@ -1,0 +1,11 @@
+name: bedtools random
+description: Generate random intervals among a genome.
+authors:
+ - Max Schubach 
+input: 
+ g: Genome file of the reference The genome file should tab delimited and structured as follows: <chromName><TAB><chromSize>
+output: bgzipped and sorted bed file of the output
+params:    
+ l: The length of the intervals to generate.
+ n: The number of intervals to generate. 
+ seed: (optional) Supply an integer seed for the shuffling.
