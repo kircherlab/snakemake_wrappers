@@ -6,5 +6,5 @@ dependencies:
  - pandas 
  - numpy 
  - pybedtools
- - seqiolib=0.2.1 
+ - seqiolib=0.2.2 
  - tensorflow-gpu
