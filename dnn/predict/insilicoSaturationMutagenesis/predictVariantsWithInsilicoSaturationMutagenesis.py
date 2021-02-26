@@ -94,8 +94,8 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
         shift = getShift(edges, region_length)
         for i, interval in enumerate(intervals):
             extended_interval = interval.length + edges[0] + edges[1]
-            extend = (shift * (interval.length//shift+1) +
-                      (region_length % shift)) % interval.length
+            extend = (shift * (extended_interval//shift+1) +
+                      (region_length % shift)) % extended_interval
             if regions[i].isReverse():
                 right = math.ceil(extend/2)+edges[0]
                 left = math.floor(extend/2)+edges[1]
