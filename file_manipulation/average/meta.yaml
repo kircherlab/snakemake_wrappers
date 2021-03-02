@@ -5,5 +5,5 @@ authors:
 input: Input file is tsv table with headers.
 output: Output file is tsv table with headers.
 params:
-  columns: columns used for aberage generation. separated by whitespace. 
+  columns: columns used for aberage generation. Must be list 
   new_column: name of the new average column.

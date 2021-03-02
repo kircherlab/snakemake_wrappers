@@ -5,4 +5,4 @@ authors:
 input: Multiple TSV files with headers
 output: Concatenated files using pandas.concat
 params:
-  columns: inf the for of columnNameFile1=valueFile1,ColumnNameFile2=valueFile2,... if only one is gven it uses the column,value combination for all files
+  columns: inf the for of columnNameFile1=valueFile1 ColumnNameFile2=valueFile2 ...(list!) if only one is gven it uses the column=value combination for all files

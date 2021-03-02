@@ -65,7 +65,7 @@ class MissingParameterException(Exception):
 # Checking parameters, remove else when parameter is not necessary and add a default value
 
 if "columns" in snakemake.params.keys():
-    param_columns = " ".join(["--column %s" % i for i in snakemake.params["columns"].split(" ")])
+    param_columns = " ".join(["--column %s" % i for i in snakemake.params["columns"]])
 else:
     raise MissingParameterException("columns")
  
