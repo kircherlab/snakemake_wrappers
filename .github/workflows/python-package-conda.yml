@@ -1,6 +1,6 @@
 name: Wrapper tests using python and conda
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   test_evaluation_auc:
