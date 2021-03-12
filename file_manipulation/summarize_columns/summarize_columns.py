@@ -33,7 +33,6 @@ import pandas as pd
               required=True,
               type=click.Path(writable=True),
               help='Output file with average columb (tsv file with headers).')
-
 def cli(input_file, columns, new_column_names, operations, output_file):
     if len(new_column_names) != len(operations):
         raise CLIException(
@@ -41,39 +40,36 @@ def cli(input_file, columns, new_column_names, operations, output_file):
 
     df = pd.read_csv(input_file, dtype=object, delimiter="\t")
 
+    switcher = {
+        'abs': lambda df: df[list(columns)].astype(float).abs(axis=1),
+        'max': lambda df: df[list(columns)].astype(float).max(axis=1),
+        'min': lambda df: df[list(columns)].astype(float).min(axis=1),
+        'mean': lambda df: df[list(columns)].astype(float).mean(axis=1),
+        'abs_max': lambda df: df[list(columns)].astype(
+            float).abs().max(axis=1),
+        'abs_mean': lambda df:  df[list(columns)].astype(
+            float).abs().mean(axis=1),
+        'abs_min': lambda df:  df[list(columns)].astype(
+            float).abs().min(axis=1),
+    }
+
     for i, operation in enumerate(operations):
         if operation in ['abs'] and len(columns) != 1:
-            raise CLIException("Operation %s can only performed on one column" % operation)
+            raise CLIException(
+                "Operation %s can only performed on one column" % operation)
 
         new_column_name = new_column_names[i]
 
-        if operation == 'abs':
-            df[new_column_name] = df[list(columns)].astype(float).abs(axis=1)
-        elif operation == 'max':
-            df[new_column_name] = df[list(columns)].astype(float).max(axis=1)
-        elif operation == 'min':
-            df[new_column_name] = df[list(columns)].astype(float).min(axis=1)
-        elif operation == 'mean':
-            df[new_column_name] = df[list(columns)].astype(float).mean(axis=1)
-        elif operation == 'abs_max':
-            df[new_column_name] = df[list(columns)].astype(
-                float).abs().max(axis=1)
-        elif operation == 'abs_mean':
-            df[new_column_name] = df[list(columns)].astype(
-                float).abs().mean(axis=1)
-        elif operation == 'abs_min':
-            df[new_column_name] = df[list(columns)].astype(
-                float).abs().min(axis=1)
-        else:
+        if operation not in switcher.keys():
             raise CLIException("Operation %s is not implemented" % operation)
+
+        df[new_column_name] = switcher.get(operation)(df)
 
     df.to_csv(output_file, header=True, index=False, sep="\t")
 
 
 if __name__ == '__main__':
     cli()
-
-
 
 
 class CLIException(Exception):
