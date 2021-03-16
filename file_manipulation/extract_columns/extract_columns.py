@@ -29,7 +29,7 @@ import click
               type=click.Path(writable=True),
               help='Output TSV file with headers.')
 def cli(input_file, columns, output_file):
-    
+
     pd.read_csv(input_file, sep="\t")[list(columns)].to_csv(output_file, index=False, sep="\t")
 
 
