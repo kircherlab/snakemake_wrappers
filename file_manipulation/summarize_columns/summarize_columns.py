@@ -20,16 +20,14 @@ import pandas as pd
               required=True,
               multiple=True,
               type=str,
-              help="""Name of the new column with the operation.
-              Must have the same length than --operation""")
+              help="Name of the new column with the operation. Must have the same length than --operation")
 @click.option('--operation',
               'operations',
               required=True,
               multiple=True,
               type=click.Choice(['abs', 'max', 'min', 'mean', 'abs_max',
                                  'abs_mean', 'abs_min'], case_sensitive=False),
-              help='''Operation of the new column.
-              Must have the same length than --new-column-name''')
+              help="Operation of the new column. Must have the same length than --new-column-name")
 @click.option('--output',
               'output_file',
               required=True,
@@ -37,9 +35,7 @@ import pandas as pd
               help='Output file with average columb (tsv file with headers).')
 def cli(input_file, columns, new_column_names, operations, output_file):
     if len(new_column_names) != len(operations):
-        raise CLIException(
-            '''--new-column-name and --operation must
-            have the same length to match operation to column.''')
+        raise CLIException("--new-column-name and --operation must have the same length to match operation to column.")
 
     df = pd.read_csv(input_file, dtype=object, delimiter="\t")
 
