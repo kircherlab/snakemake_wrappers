@@ -31,30 +31,29 @@ class MissingParameterException(Exception):
 
 if "columns" in snakemake.params.keys():
     param_columns = " ".join(
-        ["--column %s" % i for i in snakemake.params["columns"]])
+        ["--column %s %s" % (
+            key, value
+        ) for key, value in snakemake.params["columns"].items()]
+    )
 else:
-    raise MissingParameterException("columns")
+    param_columns = ""
 
-if "new_columns" in snakemake.params.keys():
-    param_new_columns = " ".join(
-        ["--new-column-name %s" % i for i in snakemake.params["new_columns"]])
+if "rows" in snakemake.params.keys():
+    param_columns = " ".join(
+        ["--row %s %s" % (
+            key, value
+        ) for key, value in snakemake.params["rows"].items()]
+    )
 else:
-    raise MissingParameterException("new_columns")
-
-if "operations" in snakemake.params.keys():
-    param_operations = " ".join(
-        ["--operation %s" % i for i in snakemake.params["operations"]])
-else:
-    raise MissingParameterException("operation")
+    param_rows = ""
 
 
 # running the shell
 shell(
     """
-    python  {scriptFolder}/summarize_columns.py \
-    {param_operations} \
-    {param_columns}  \
-    {param_new_columns}  \
-    --input {snakemake.input} --output {snakemake.output}
+    python  {scriptFolder}/rename.py \
+    {param_rows} \
+    {param_columns} \
+    --input {snakemake.input}  --output  {snakemake.output}
     """
 )
