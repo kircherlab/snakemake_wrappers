@@ -1,0 +1,8 @@
+name: Extract columns
+description: Extracts columns in file using pandas
+authors:
+ - Max Schubach 
+input: Input tsv file with headers
+output: output tsv file with headers
+params: 
+  columns: Columns to extract
