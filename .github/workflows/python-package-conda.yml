@@ -1,4 +1,4 @@
-name: Wrapper tests using python and conda
+name: Wrapper pytests
 
 on: [push, pull_request]
 
