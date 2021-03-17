@@ -4,7 +4,6 @@
 Concat tables with header using pandas
 """
 
-import sys
 import pandas as pd
 
 import click
@@ -23,29 +22,30 @@ import click
               'columns',
               multiple=True,
               required=False,
-              type=(str,str),
+              type=(str, str),
               help='Adding collumns with value. can be given for each file seperately or one for all')
 @click.option('--output',
               'output_file',
               required=True,
               type=click.Path(writable=True),
               help='Output TSV file with headers.')
-
 def cli(input_files, columns, output_file):
     if columns:
         if len(columns) != 1 and len(input_files) != len(columns):
             raise Exception("column option must be 1 or the length of the files")
-        
+
     output = pd.DataFrame()
-    
-    for i,input_file in enumerate(input_files):
+
+    for i, input_file in enumerate(input_files):
         df = pd.read_csv(input_file, sep="\t")
         if columns and len(columns) > 1:
             df[columns[i][0]] = columns[i][1]
-        output = pd.concat([output,df])
-    
+        output = pd.concat([output, df])
+
     if columns and len(columns) == 1:
         output[columns[0][0]] = columns[0][1]
-    output.to_csv(output_file, index=False,sep="\t")
+    output.to_csv(output_file, index=False, sep="\t")
+
+
 if __name__ == '__main__':
     cli()
