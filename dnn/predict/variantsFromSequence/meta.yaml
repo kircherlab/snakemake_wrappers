@@ -1,15 +1,16 @@
+---
 name: variantsFromSequence
 description: predicts the delta (alt-ref) from variants with a DNN model trained with sequences
 authors:
-  - Max Schubach
+    - Max Schubach
 input:
-  variants: variants for in-silico mutagenesis. 
-  model: the trained model. 
-  weights: weights of the model. 
-  reference: indexed fasta file of the genome reference.
-  reference_index: The index of the fasta file.
-  genome: genome file of the reference.
+    variants: variants for in-silico mutagenesis.
+    model: the trained model.
+    weights: weights of the model.
+    reference: indexed fasta file of the genome reference.
+    reference_index: The index of the fasta file.
+    genome: genome file of the reference.
 output: List of tables with variants and their prediction
-params: 
-  altMinusRef: (Optional) If set to true the delta is predicted by alt - ref.
-  fileType: Input file type of variants. Can be TSV or VCF.
+params:
+    altMinusRef: (Optional) If set to true the delta is predicted by alt - ref.
+    fileType: Input file type of variants. Can be TSV or VCF.

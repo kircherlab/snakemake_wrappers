@@ -1,10 +1,11 @@
+---
 name: pandas replace wrapper
 description: Wrapper for the pandas replace function
 authors:
- - Max Schubach 
+    - Max Schubach
 input: Input tsv fiel with headers
 output: output tsv file with headers
-params: 
-  columns: List of columns used for replace. 
-  pat: the corresponding patter. 
-  replace: the string for replacement
+params:
+    columns: List of columns used for replace.
+    pat: the corresponding patter.
+    replace: the string for replacement

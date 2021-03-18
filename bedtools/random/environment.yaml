@@ -1,6 +1,7 @@
+---
 channels:
-- bioconda
-- conda-forge
+    - bioconda
+    - conda-forge
 dependencies:
- - bedtools 
- - htslib
+    - bedtools
+    - htslib

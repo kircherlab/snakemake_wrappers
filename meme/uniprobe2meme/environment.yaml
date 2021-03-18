@@ -1,5 +1,6 @@
+---
 channels:
-  - bioconda
-  - conda-forge
+    - bioconda
+    - conda-forge
 dependencies:
-  - meme ==5.1.1
+    - meme ==5.1.1

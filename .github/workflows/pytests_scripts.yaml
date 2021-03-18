@@ -1,0 +1,139 @@
+---
+name: tests python scripts
+
+on: [push, pull_request]
+
+jobs:
+    test_evaluation_auc:
+        runs-on: ubuntu-latest
+        strategy:
+            max-parallel: 5
+            matrix:
+                os: [ubuntu-latest]
+        steps:
+            - uses: actions/checkout@v2
+            - name: Set up Python 3.8
+              uses: actions/setup-python@v2
+              with:
+                  python-version: 3.8
+            - name: Add conda to system path
+              run: |
+                  # $CONDA is an environment variable pointing to the root of the miniconda directory
+                  echo $CONDA/bin >> $GITHUB_PATH
+            - name: Install dependencies
+              run: |
+                  conda env update --file evaluate/auc/environment.yaml --name base
+                  conda env
+            - name: Lint with flake8
+              run: |
+                  conda install flake8
+                  # stop the build if there are Python syntax errors or undefined names
+                  flake8 evaluate/auc/auc.py --count --select=E9,F63,F7,F82 --show-source --statistics
+                  # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+                  flake8 evaluate/auc/auc.py --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+            - name: Test with pytest
+              run: |
+                  conda install pytest
+                  cd evaluate/auc
+                  pytest
+    test_fileManipulation_summarizeColumns:
+        runs-on: ubuntu-latest
+        strategy:
+            max-parallel: 5
+            matrix:
+                os: [ubuntu-latest]
+        steps:
+            - uses: actions/checkout@v2
+            - name: Set up Python 3.8
+              uses: actions/setup-python@v2
+              with:
+                  python-version: 3.8
+            - name: Add conda to system path
+              run: |
+                  # $CONDA is an environment variable pointing to the root of the miniconda directory
+                  echo $CONDA/bin >> $GITHUB_PATH
+            - name: Install dependencies
+              run: |
+                  conda env update --file file_manipulation/summarize_columns/environment.yaml --name base
+                  conda env
+            - name: Lint with flake8
+              run: |
+                  conda install flake8
+                  # stop the build if there are Python syntax errors or undefined names
+                  flake8 file_manipulation/summarize_columns/summarize_columns.py --count \
+                  --select=E9,F63,F7,F82 --show-source --statistics
+                  # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+                  flake8 file_manipulation/summarize_columns/summarize_columns.py --count \
+                  --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+            - name: Test with pytest
+              run: |
+                  conda install pytest
+                  cd file_manipulation/summarize_columns
+                  pytest
+    test_fileManipulation_rename:
+        runs-on: ubuntu-latest
+        strategy:
+            max-parallel: 5
+            matrix:
+                os: [ubuntu-latest]
+        steps:
+            - uses: actions/checkout@v2
+            - name: Set up Python 3.8
+              uses: actions/setup-python@v2
+              with:
+                  python-version: 3.8
+            - name: Add conda to system path
+              run: |
+                  # $CONDA is an environment variable pointing to the root of the miniconda directory
+                  echo $CONDA/bin >> $GITHUB_PATH
+            - name: Install dependencies
+              run: |
+                  conda env update --file file_manipulation/rename/environment.yaml --name base
+                  conda env
+            - name: Lint with flake8
+              run: |
+                  conda install flake8
+                  # stop the build if there are Python syntax errors or undefined names
+                  flake8 file_manipulation/rename/rename.py --count --select=E9,F63,F7,F82 --show-source --statistics
+                  # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+                  flake8 file_manipulation/rename/rename.py --count --exit-zero --max-complexity=10 \
+                  --max-line-length=127 --statistics
+            - name: Test with pytest
+              run: |
+                  conda install pytest
+                  cd file_manipulation/rename
+                  pytest
+    test_fileManipulation_extract_columns:
+        runs-on: ubuntu-latest
+        strategy:
+            max-parallel: 5
+            matrix:
+                os: [ubuntu-latest]
+        steps:
+            - uses: actions/checkout@v2
+            - name: Set up Python 3.8
+              uses: actions/setup-python@v2
+              with:
+                  python-version: 3.8
+            - name: Add conda to system path
+              run: |
+                  # $CONDA is an environment variable pointing to the root of the miniconda directory
+                  echo $CONDA/bin >> $GITHUB_PATH
+            - name: Install dependencies
+              run: |
+                  conda env update --file file_manipulation/extract_columns/environment.yaml --name base
+                  conda env
+            - name: Lint with flake8
+              run: |
+                  conda install flake8
+                  # stop the build if there are Python syntax errors or undefined names
+                  flake8 file_manipulation/extract_columns/extract_columns.py --count \
+                  --select=E9,F63,F7,F82 --show-source --statistics
+                  # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+                  flake8 file_manipulation/extract_columns/extract_columns.py --count --exit-zero \
+                  --max-complexity=10 --max-line-length=127 --statistics
+            - name: Test with pytest
+              run: |
+                  conda install pytest
+                  cd file_manipulation/rename
+                  pytest

@@ -1,4 +1,7 @@
+---
 name: negative_training_sampler
-description: This package takes a minimal bed file with positive (1) and negative (0) labeled genomic coordinates, calculates their gc content and balances positive and negative labeled entries per chromosome based on their respective GC content.
+description: "This package takes a minimal bed file with positive (1) and negative (0)
+    labeled genomic coordinates, calculates their gc content and balances positive and negative
+    labeled entries per chromosome based on their respective GC content."
 authors:
-  - Max Schubach
+    - Max Schubach

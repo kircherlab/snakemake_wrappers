@@ -1,8 +1,9 @@
+---
 channels:
-  - bioconda
-  - conda-forge
+    - bioconda
+    - conda-forge
 dependencies:
-  - python
-  - pandas
-  - numpy
-  - click
+    - python
+    - pandas
+    - numpy
+    - click

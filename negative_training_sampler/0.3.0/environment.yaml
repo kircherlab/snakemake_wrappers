@@ -1,6 +1,7 @@
+---
 channels:
-  - bioconda
-  - conda-forge
+    - bioconda
+    - conda-forge
 dependencies:
-  - htslib
-  - negative_training_sampler ==0.3.0
+    - htslib
+    - negative_training_sampler ==0.3.0

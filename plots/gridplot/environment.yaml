@@ -1,7 +1,8 @@
+---
 channels:
-- bioconda
-- conda-forge
+    - bioconda
+    - conda-forge
 dependencies:
- - r-optparse 
- - r-gridextra 
- - r-tidyverse 
+    - r-optparse
+    - r-gridextra
+    - r-tidyverse

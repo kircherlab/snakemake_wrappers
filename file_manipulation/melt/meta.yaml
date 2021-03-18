@@ -1,11 +1,13 @@
+---
 name: Pandas Melt wrapper
 description: Melt columns into rows
 authors:
- - Max Schubach 
+    - Max Schubach
 input: TSV table for melting
 output: TSV table with melted result
-params: 
-  id_vars: columns that not should be used for melting. Must be list
-  value_vars: (Optional) columns that should be used for melting (header will be variable, column will be value). If not set all will be used. Must be list
-  value_name: (Optional)  Name to use for the ‘value’ column. default value
-  var_name: (Optional) Name to use for the ‘variable’ column. default variable.
+params:
+    id_vars: columns that not should be used for melting. Must be list
+    value_vars: (Optional) columns that should be used for melting (header will be variable, column will be value).
+        If not set all will be used. Must be list
+    value_name: (Optional)  Name to use for the ‘value’ column. default value
+    var_name: (Optional) Name to use for the ‘variable’ column. default variable.

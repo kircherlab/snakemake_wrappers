@@ -1,4 +1,6 @@
-name: extract_convolutional_kernels
-description: extract the kernels of convolutional layer for motif search. Important: one-hot-encoding must be in the order of ACGT
+---
+√name: extract_convolutional_kernels
+description: "extract the kernels of convolutional layer for motif search.
+    Important: one-hot-encoding must be in the order of ACGT"
 authors:
-  - Max Schubach
+    - Max Schubach
