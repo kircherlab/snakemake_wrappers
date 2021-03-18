@@ -67,10 +67,6 @@ def cli(input_file, columns, new_column_names, operations, output_file):
     df.to_csv(output_file, header=True, index=False, sep="\t")
 
 
-if __name__ == '__main__':
-    cli()
-
-
 class CLIException(Exception):
     """Exception raised for errors in the input.
 
@@ -86,3 +82,7 @@ class CLIException(Exception):
 
     def __str__(self):
         return(self.message)
+
+
+if __name__ == '__main__':
+    cli()
