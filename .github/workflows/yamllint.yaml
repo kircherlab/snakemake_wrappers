@@ -13,5 +13,3 @@ jobs:
         steps:
             - name: YAML Lint
               uses: ibiqlik/action-yamllint@v3.0.0
-              run: |
-                  pylint .
