@@ -8,6 +8,7 @@ from snakemake.shell import shell
 
 scriptFolder = os.path.dirname(os.path.abspath(__file__))
 
+
 class MissingParameterException(Exception):
     """Exception raised for errors in the input.
 
@@ -26,6 +27,7 @@ class MissingParameterException(Exception):
 
 # Checking parameters, remove else when parameter is not necessary and add a default value
 
+
 if "columns" in snakemake.params.keys():
     param_columns = " ".join(["--column %s" % i for i in snakemake.params["columns"]])
 else:
@@ -35,7 +37,7 @@ else:
 shell(
     """
     python {scriptFolder}/abs.py \
-    {params_columns}
+    {param_columns} \
      --input {snakemake.input}  \
      --output {snakemake.output}
     """
