@@ -1,0 +1,7 @@
+---
+name: abslute values
+description: Replace values of columns with the abslute value
+authors:
+    - Max Schubach
+input: A TSV file with headers and the corresponding columns
+output: The output files with the replaced values by absolute value from the columns
