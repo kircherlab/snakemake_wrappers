@@ -40,7 +40,7 @@ def cli(input_file, columns, new_column_names, operations, output_file):
     df = pd.read_csv(input_file, dtype=object, delimiter="\t")
 
     switcher = {
-        'abs': lambda df: df[list(columns)].astype(float).abs(axis=1),
+        'abs': lambda df: df[list(columns)].astype(float).abs(),
         'max': lambda df: df[list(columns)].astype(float).max(axis=1),
         'min': lambda df: df[list(columns)].astype(float).min(axis=1),
         'mean': lambda df: df[list(columns)].astype(float).mean(axis=1),
