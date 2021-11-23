@@ -60,22 +60,6 @@ class MissingParameterException(Exception):
         return("Parameter %s is missing!" % (self.parameter))
 
 
-# Checking inputs
-
-if "input" in snakemake.inputs.keys():
-    input_input = snakemake.inputs["predictions"]
-else:
-    raise MissingInputException("predictions")
-
-
-# Checking outputs
-
-if "output" in snakemake.outputs.keys():
-    output_output = snakemake.outputs["output"]
-else:
-    raise MissingOuputException("output")
-
-
 # Checking parameters, remove else when parameter is not necessary and add a default value
 
 if "score_column" in snakemake.params.keys():
@@ -101,6 +85,6 @@ shell(
     python  {scriptFolder}/metric_plots.py \
     --score-column {param_score_column}  --label-column {param_label_column} \
     --positive-label {param_positive_label} \
-    --input {input_input}  --output {output_output}
+    --input {snakemake.input}  --output {snakemake.output}
     """
 )
