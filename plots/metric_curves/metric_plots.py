@@ -24,7 +24,7 @@ import matplotlib.pyplot as plt
               required=True,
               type=str,
               help='column name of the real label')
-@click.option('--positive_label',
+@click.option('--positive-label',
               'positive_label',
               required=True,
               default=1.0,
