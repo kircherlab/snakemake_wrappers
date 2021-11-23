@@ -46,5 +46,6 @@ def cli(file_a, file_b, values, output_file):
     pd.concat([methods, pd.Series(output, name='value')],
               axis=1).to_csv(output_file, header=True, index=False, sep="\t")
 
+
 if __name__ == '__main__':
     cli()
