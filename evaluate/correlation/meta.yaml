@@ -10,5 +10,5 @@ input:
     b: (Optional) File b with socres. must have headers
 output: Pearson and spearman correlation beetween both values
 params:
-    value_a: Name of the value in file a used fore correlation.
-    value_b: Name of the value in file b (or a if b not set) used for correlationi.
+    value_a: Name of the value in file a used for correlation.
+    value_b: Name of the value in file b (or a if b not set) used for correlation.
