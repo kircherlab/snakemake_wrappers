@@ -1,4 +1,4 @@
+---
 channels:
-  - bioconda
-  - conda-forge
-dependencies:
+    - bioconda
+    - conda-forge

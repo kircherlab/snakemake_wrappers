@@ -1,0 +1,10 @@
+---
+channels:
+ - bioconda
+ - conda-forge
+dependencies:
+ - python
+ - pandas
+ - click
+ - scikit-learn
+ - matplotlib

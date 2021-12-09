@@ -40,7 +40,7 @@ def cli(input_file, columns, new_column_names, operations, output_file):
     df = pd.read_csv(input_file, dtype=object, delimiter="\t")
 
     switcher = {
-        'abs': lambda df: df[list(columns)].astype(float).abs(axis=1),
+        'abs': lambda df: df[list(columns)].astype(float).abs(),
         'max': lambda df: df[list(columns)].astype(float).max(axis=1),
         'min': lambda df: df[list(columns)].astype(float).min(axis=1),
         'mean': lambda df: df[list(columns)].astype(float).mean(axis=1),
@@ -67,10 +67,6 @@ def cli(input_file, columns, new_column_names, operations, output_file):
     df.to_csv(output_file, header=True, index=False, sep="\t")
 
 
-if __name__ == '__main__':
-    cli()
-
-
 class CLIException(Exception):
     """Exception raised for errors in the input.
 
@@ -86,3 +82,7 @@ class CLIException(Exception):
 
     def __str__(self):
         return(self.message)
+
+
+if __name__ == '__main__':
+    cli()

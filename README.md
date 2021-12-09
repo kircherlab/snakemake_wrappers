@@ -1,4 +1,4 @@
-[![Wrapper pytests](https://github.com/visze/snakemake_wrappers/actions/workflows/python-package-conda.yml/badge.svg?branch=master)](https://github.com/visze/snakemake_wrappers/actions/workflows/python-package-conda.yml)
+[![tests YAML files](https://github.com/visze/snakemake_wrappers/actions/workflows/yamllint.yaml/badge.svg)](https://github.com/visze/snakemake_wrappers/actions/workflows/yamllint.yaml) [![tests python scripts](https://github.com/visze/snakemake_wrappers/actions/workflows/pytests_scripts.yaml/badge.svg)](https://github.com/visze/snakemake_wrappers/actions/workflows/pytests_scripts.yaml)
 
 # Snakemake wrappers
 

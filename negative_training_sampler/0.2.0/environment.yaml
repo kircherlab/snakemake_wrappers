@@ -1,5 +1,6 @@
+---
 channels:
-  - bioconda
-  - conda-forge
+    - bioconda
+    - conda-forge
 dependencies:
-  - negative_training_sampler ==0.2.0
+    - negative_training_sampler ==0.2.0

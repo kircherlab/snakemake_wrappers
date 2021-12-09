@@ -1,4 +1,5 @@
+---
 name: getfasta
 description: extarct fasta file out of bed file
 authors:
-  - Max Schubach
+    - Max Schubach

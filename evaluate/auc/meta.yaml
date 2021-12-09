@@ -1,9 +1,10 @@
+---
 name: Generate AUC scores
 description: Generate multiple auc scores
 authors:
- - Max Schubach 
+    - Max Schubach
 input: TSV file with predictions and labels
 output: output with auc values
-params: 
+params:
     label_column: name of the column with the labels
     prediction_column: name of the column with the predictions

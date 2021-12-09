@@ -1,6 +1,7 @@
+---
 name: Bash paste
 description: Running bash paste on gziped files
 authors:
-  - Max Schubach
+    - Max Schubach
 input: multiple files for paste input
 output: the final pasted file gzipped

@@ -1,13 +1,14 @@
+---
 name: Merge two files on identifier
 description: Merge two files using one or multiple identifiers in both files
 authors:
- - Max Schubach 
-input: 
-  left: Left file for merge 
-  right: Right file for merge
+    - Max Schubach
+input:
+    left: Left file for merge
+    right: Right file for merge
 output: Merged files
-params: 
-  how: left, right, outer, inner, cross
-  suffixes: ruple, left and right suffixes
-  left_on: columns in left file seperated by space
-  right_on: columns in right file separated by space. if not used on_a will be used.
+params:
+    how: left, right, outer, inner, cross
+    suffixes: ruple, left and right suffixes
+    left_on: columns in left file seperated by space
+    right_on: columns in right file separated by space. if not used on_a will be used.

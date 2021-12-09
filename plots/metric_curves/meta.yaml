@@ -1,0 +1,11 @@
+---
+name: metric_curves
+description: Plotting different evaluation metrics (like PR curves, ROC curves) from predictions.
+authors:
+ - Max Schubach
+input: File with scores and label
+output: Final plot
+params:
+ score_column: column name of the score
+ label_column: column name of the real label
+ positive_label: column name of the positive label

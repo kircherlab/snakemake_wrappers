@@ -1,10 +1,12 @@
+---
 name: Summarize columns
 description: Creating a new column out of other columns using multiple operations (like mean, min, max)
 authors:
-  - Max Schubach
+    - Max Schubach
 input: Input file is tsv table with headers.
 output: Output file is tsv table with headers.
 params:
-  columns: columns used for operations generation. Must be list
-  new_columns: Name of the new columns. Must be a list of the same length than operations.
-  operations: Operation done on the columns. Must be a list of the same length than new_columns. Possible operations 'abs', 'max', 'min', 'mean', 'abs_max', 'abs_mean', 'abs_min'
+    columns: columns used for operations generation. Must be list
+    new_columns: Name of the new columns. Must be a list of the same length than operations.
+    operations: Operation done on the columns. Must be a list of the same length than new_columns.
+        Possible operations 'abs', 'max', 'min', 'mean', 'abs_max', 'abs_mean', 'abs_min'
