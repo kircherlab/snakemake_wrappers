@@ -48,7 +48,8 @@ def cli(input_files, columns, index, output_file):
         df = pd.read_csv(input_file, sep="\t")
         if columns and len(columns) > 1:
             df[columns[i][0]] = columns[i][1]
-        df.set_index(index,inplace=True) if index in df.columns
+        if index in df.columns:
+          df.set_index(index,inplace=True)
         
         if index:
           output = pd.concat([output, df], axis=axis)
