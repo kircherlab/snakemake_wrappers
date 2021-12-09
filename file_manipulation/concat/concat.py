@@ -42,7 +42,7 @@ def cli(input_files, columns, index, output_file):
 
     axis = 1 if index else 0
     write_index = True if index else False
-      
+
     output = pd.DataFrame()
 
     for i, input_file in enumerate(input_files):
@@ -50,10 +50,9 @@ def cli(input_files, columns, index, output_file):
         if columns and len(columns) > 1:
             df[columns[i][0]] = columns[i][1]
         if index in df.columns:
-          df.set_index(index,inplace=True)
+            df.set_index(index, inplace=True)
         
-        if index:
-          output = pd.concat([output, df], axis=axis)
+        output = pd.concat([output, df], axis=axis)
 
     if columns and len(columns) == 1:
         output[columns[0][0]] = columns[0][1]

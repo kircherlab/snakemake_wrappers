@@ -1,0 +1,3 @@
+metric	A	B	C
+AUPRC	0.12	0.7	1.0
+AUROC	0.3	0.6	1.0
