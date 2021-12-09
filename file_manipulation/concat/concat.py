@@ -41,6 +41,7 @@ def cli(input_files, columns, index, output_file):
             raise Exception("column option must be 1 or the length of the files")
 
     axis = 1 if index else 0
+    write_index = True if index else False
       
     output = pd.DataFrame()
 
@@ -56,7 +57,7 @@ def cli(input_files, columns, index, output_file):
 
     if columns and len(columns) == 1:
         output[columns[0][0]] = columns[0][1]
-    output.to_csv(output_file, index=False, sep="\t")
+    output.to_csv(output_file, index=write_index, sep="\t")
 
 
 if __name__ == '__main__':
