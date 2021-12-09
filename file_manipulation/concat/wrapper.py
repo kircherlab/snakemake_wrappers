@@ -8,6 +8,7 @@ from snakemake.shell import shell
 
 scriptFolder = os.path.dirname(os.path.abspath(__file__))
 
+
 class MissingParameterException(Exception):
     """Exception raised for errors in the input.
 
@@ -36,7 +37,12 @@ inputs = " ".join(["--input %s" % i for i in snakemake.input])
 if "columns" in snakemake.params.keys():
     param_columns = " ".join(["--column %s %s" % tuple(i.split("=")) for i in snakemake.params["columns"]])
 else:
-    param_columns="" 
+    param_columns = ""
+
+if "index" in snakemake.params.keys():
+    param_index = "--index %s" % snakemake.params["index"]
+else:
+    param_index = ""
 
 
 # running the shell
@@ -45,6 +51,7 @@ shell(
     python  {scriptFolder}/concat.py \
     {param_columns}  \
     {inputs} \
+    {param_index} \
     --output {snakemake.output} 
     """
 )
