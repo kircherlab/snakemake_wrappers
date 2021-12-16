@@ -1,0 +1,6 @@
+Nucleotide	Position_1_counts	Position_1_ratio	Position_2_counts	Position_2_ratio	Position_3_counts	Position_3_ratio	Position_4_counts	Position_4_ratio
+A	4	1.0	0	0.0	0	0.0	0	0.0
+T	0	0.0	4	1.0	4	1.0	0	0.0
+C	0	0.0	0	0.0	0	0.0	4	1.0
+G	0	0.0	0	0.0	0	0.0	0	0.0
+N	0	0.0	0	0.0	0	0.0	0	0.0
