@@ -1,0 +1,10 @@
+---
+name: Nucleotide composition per position
+description: Reada a TSV file and returns the nucleotide composition per position (count and ratio) of a given column.
+authors:
+    - Max Schubach
+input: Input file is tsv table with or without headers.
+output: Output file is tsv table with headers.
+params:
+    column: The position of the column (1-based) or when header is set the name of the column
+    header: Boolean indicating if input has a header. (default false)
