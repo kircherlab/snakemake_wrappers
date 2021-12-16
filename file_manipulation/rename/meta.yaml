@@ -6,5 +6,5 @@ authors:
 input: Input file is tsv table with headers.
 output: Output file is tsv table with headers.
 params:
-    columns: in the form of column=replacement. Must be list
-    rows: in the form of row=replacement. Must be list
+    columns: in the form of column=replacement. Must be dictionary
+    rows: in the form of row=replacement. Must be dictionary
