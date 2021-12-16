@@ -41,7 +41,10 @@ def cli(file_a, file_b, values, output_file):
     output = []
     methods = pd.Series(['pearson', 'spearman'], name="metric")
     for method in methods:
-        output.append(df.corr(method).loc["A", "B"])
+        if df['A'].equals(df['B']):
+            output.append(1.0)
+        else:
+            output.append(df.corr(method).loc["A", "B"])
 
     pd.concat([methods, pd.Series(output, name='value')],
               axis=1).to_csv(output_file, header=True, index=False, sep="\t")
