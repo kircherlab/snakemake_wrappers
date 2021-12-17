@@ -39,6 +39,11 @@ if "header" in snakemake.params.keys():
 else:
     param_header = "--no-header"
 
+if "chunksize" in snakemake.params.keys():
+    param_chunksize = "--chunksize" if snakemake.params["chunksize"]
+else:
+    param_chunksize = "--chunksize 10000"
+
 
 # running the shell
 shell(
@@ -46,6 +51,7 @@ shell(
     python  {scriptFolder}/nucleotideCountPerPosition.py \
     {param_header} \
     {param_column} \
+    {param_chunksize} \
     --input {snakemake.input}  --output  {snakemake.output}
     """
 )

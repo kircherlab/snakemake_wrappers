@@ -9,6 +9,6 @@ input:
 output: Merged files
 params:
     how: left, right, outer, inner, cross
-    suffixes: ruple, left and right suffixes
+    suffixes: Left and right suffixes e.g. "_B _B"
     left_on: columns in left file seperated by space
     right_on: columns in right file separated by space. if not used on_a will be used.

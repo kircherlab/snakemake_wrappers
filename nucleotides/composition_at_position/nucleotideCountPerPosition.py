@@ -64,7 +64,6 @@ def cli(input_file, column, use_header, output_file, chunksize):
                 counts_column = "Position_%d_counts" % (i+1)
                 ratio_column = "Position_%d_ratio" % (i+1)
                 if counts_column not in output.columns:
-                    print(counts_column)
                     output[counts_column] = 0.0
                     output[ratio_column] = 0.0
                     count_columns += [counts_column]
