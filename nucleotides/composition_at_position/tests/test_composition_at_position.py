@@ -55,3 +55,13 @@ def test6_nucleotideCountPerPosition():
                                  '--output', "tests/output.tsv"])
     assert result.exit_code == 0
     assert filecmp.cmp("tests/output.tsv", "tests/outTest2.tsv")
+
+def test7_nucleotideCountPerPosition():
+    runner = CliRunner()
+    result = runner.invoke(cli, ['--input', 'tests/input2.tsv',
+                                 '--column', "B",
+                                 '--header',
+                                 '--chunksize', 1,
+                                 '--output', "tests/output.tsv"])
+    assert result.exit_code == 0
+    assert filecmp.cmp("tests/output.tsv", "tests/outTest2.tsv")
