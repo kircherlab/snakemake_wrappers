@@ -46,7 +46,7 @@ def cli(input_file, replacements, output_file):
             ]
         else:
             replacements_new += [replacement]
-    for replacement in replacements:
+    for replacement in replacements_new:
         df[replacement[0]] = df[replacement[0]].replace(replacement[1], replacement[2])
 
     df.to_csv(output_file, index=False, sep="\t")
