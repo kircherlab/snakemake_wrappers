@@ -37,11 +37,15 @@ import click
     help="Output TSV file with headers.",
 )
 def cli(input_file, replacements, output_file):
-
+    replacements_new = []
     df = pd.read_csv(input_file, sep="\t")
     for replacement in replacements:
         if is_numeric_dtype(df[replacement[0]]):
-            replacement[1] = float(replacement[1])
+            replacements_new += [
+                (replacement[0], float(replacement[1]), replacement[2])
+            ]
+        else:
+            replacements_new += [replacement]
     for replacement in replacements:
         df[replacement[0]] = df[replacement[0]].replace(replacement[1], replacement[2])
 
