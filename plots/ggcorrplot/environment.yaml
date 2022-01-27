@@ -1,0 +1,8 @@
+---
+channels:
+    - bioconda
+    - conda-forge
+dependencies:
+    - r-optparse
+    - r-ggcorrplot
+    - r-tidyverse>=1.3

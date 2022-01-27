@@ -1,0 +1,12 @@
+---
+name: plot correlation matrix (ggcorrplot)
+description: Using correlation within one or between two tables to create a ggcorrplot
+authors:
+    - Max Schubach
+input: TSV tables with headers
+output: The correlation plot
+params:
+    columns: List of columns used for correlation plot. If not set all are used.
+    bind: If set to True, all input files will be bind together. Default false
+    arrange: If set arranges (sorts) the table onb this collumn
+    method: The method used for correlation. default spearman
