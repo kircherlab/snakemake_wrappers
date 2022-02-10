@@ -9,4 +9,4 @@ params:
     columns: columns used for operations generation. Must be list
     new_columns: Name of the new columns. Must be a list of the same length than operations.
     operations: Operation done on the columns. Must be a list of the same length than new_columns.
-        Possible operations 'abs', 'max', 'min', 'mean', 'abs_max', 'abs_mean', 'abs_min'
+        Possible operations 'abs', 'max', 'min', 'mean', 'std', 'abs_max', 'abs_mean', 'abs_min', 'abs_std'

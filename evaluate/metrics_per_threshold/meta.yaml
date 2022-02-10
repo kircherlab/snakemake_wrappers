@@ -1,0 +1,11 @@
+---
+name: Generate different metrics per score threshod
+description: "generates the following: True-negatives, False-positives, False-negatives, True-positives, Sensitivity, Specificity, Precision, Recall, F1-score, F2-score"
+authors:
+    - Max Schubach
+input: TSV file with predictions and labels
+output: output with thresholds and metrics
+params:
+    label_column: name of the column with the labels
+    prediction_column: name of the column with the predictions
+    positive_label: positive label (int)

@@ -25,8 +25,8 @@ import pandas as pd
               'operations',
               required=True,
               multiple=True,
-              type=click.Choice(['abs', 'max', 'min', 'mean', 'abs_max',
-                                 'abs_mean', 'abs_min'], case_sensitive=False),
+              type=click.Choice(['abs', 'max', 'min', 'mean', 'std', 'abs_max',
+                                 'abs_mean', 'abs_std', 'abs_min'], case_sensitive=False),
               help="Operation of the new column. Must have the same length than --new-column-name")
 @click.option('--output',
               'output_file',
@@ -44,8 +44,11 @@ def cli(input_file, columns, new_column_names, operations, output_file):
         'max': lambda df: df[list(columns)].astype(float).max(axis=1),
         'min': lambda df: df[list(columns)].astype(float).min(axis=1),
         'mean': lambda df: df[list(columns)].astype(float).mean(axis=1),
+        'std': lambda df: df[list(columns)].astype(float).std(axis=1),
         'abs_max': lambda df: df[list(columns)].astype(
             float).abs().max(axis=1),
+        'abs_std': lambda df: df[list(columns)].astype(
+            float).abs().std(axis=1),
         'abs_mean': lambda df:  df[list(columns)].astype(
             float).abs().mean(axis=1),
         'abs_min': lambda df:  df[list(columns)].astype(
