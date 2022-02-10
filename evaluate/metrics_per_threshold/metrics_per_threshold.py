@@ -61,7 +61,7 @@ def cli(input_file, score_column, label_column, positive_label, output_file):
         classes = labels.unique().tolist()
         classes.remove(positive_label)
         classes = classes + [positive_label]
-        result_conf = confusion_matrix(labels, scores_thresh,labels=classes).ravel().tolist()
+        result_conf = confusion_matrix(labels, scores_thresh, labels=classes).ravel().tolist()
 
         result = pd.DataFrame([result_conf + result_prec_rec + result_acc], columns=["True-negatives", "False-positives",
                               "False-negatives", "True-positives", "Precision", "Recall", "F1-score", "Support", "Accuracy", "Balanced-accuracy"], index=[thresh])
@@ -71,7 +71,6 @@ def cli(input_file, score_column, label_column, positive_label, output_file):
     output["Specificity"] = output["True-negatives"]/(output["True-negatives"]+output["False-positives"])
     output["F2-score"] = (1+2 ** 2)*((output["Precision"]*output["Recall"])/((2 ** 2*output["Precision"])+output["Recall"]))
 
-    
     output.index.name = 'Threshold'
     output = output[["True-negatives", "False-positives", "False-negatives", "True-positives",
                     "Sensitivity", "Specificity", "Precision", "Recall", "F1-score", "F2-score", "Accuracy", "Balanced-accuracy"]]
