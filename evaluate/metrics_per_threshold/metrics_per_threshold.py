@@ -63,9 +63,10 @@ def cli(input_file, score_column, label_column, positive_label, output_file):
         classes = classes + [positive_label]
         result_conf = confusion_matrix(labels, scores_thresh, labels=classes).ravel().tolist()
 
-        result = pd.DataFrame([result_conf + result_prec_rec + result_acc], columns=["True-negatives", "False-positives",
-                              "False-negatives", "True-positives", "Precision", "Recall", "F1-score", "Support", 
-                              "Accuracy", "Balanced-accuracy"], index=[thresh])
+        result = pd.DataFrame([result_conf + result_prec_rec + result_acc], columns=[
+            "True-negatives", "False-positives", "False-negatives", "True-positives", "Precision",
+            "Recall", "F1-score", "Support", "Accuracy", "Balanced-accuracy"
+            ], index=[thresh])
         output = output.append(result)
 
     output["Sensitivity"] = output["True-positives"]/(output["True-positives"]+output["False-negatives"])
