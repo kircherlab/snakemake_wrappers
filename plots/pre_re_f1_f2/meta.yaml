@@ -1,0 +1,10 @@
+---
+name: plot precision recall f1- and f2-score
+description: Using the result of evaluate/metrics_per_threshold to create a Precision, recall f1-f2- score plot per threshold
+authors:
+    - Max Schubach
+input: TSV tables with headers from evaluate/metrics_per_threshold
+output: The plot
+params:
+    xname: Name of the x-lab (default Score)
+    yname: Name of the y-lab (default Value)

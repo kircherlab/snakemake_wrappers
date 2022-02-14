@@ -74,6 +74,12 @@ if "prediction_column" in snakemake.params.keys():
     param_prediction_column = snakemake.params["prediction_column"]
 else:
     raise MissingParameterException("prediction_column")
+
+if "prediction_column" in snakemake.params.keys():
+    param_decimals = "--decimals %s" % snakemake.params["decimals"]
+else:
+    param_decimals = ""
+    
  
 
 
@@ -82,6 +88,6 @@ shell(
     """
     python  {scriptFolder}/metrics_per_threshold.py \
     --input {snakemake.input} --output {snakemake.output} \
-    --label-column {param_label_column} --positive-label {param_positive_label} --prediction-column {param_prediction_column} 
+    --label-column {param_label_column} --positive-label {param_positive_label} --prediction-column {param_prediction_column} {param_decimals}
     """
 )

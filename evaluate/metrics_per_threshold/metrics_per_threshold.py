@@ -29,7 +29,7 @@ from sklearn.metrics import balanced_accuracy_score
               default=1,
               type=int,
               help='column name of the positive label')
-@click.option('--descimals',
+@click.option('--decimals',
               'decimals',
               default=2,
               type=int,
@@ -75,13 +75,13 @@ def cli(input_file, score_column, label_column, positive_label, output_file, dec
                 ], index=[thresh])
             output = output.append(result)
 
-    output["Sensitivity"] = output["True-positives"]/(output["True-positives"]+output["False-negatives"])
+    output["False-positive-rate"] = output["False-positives"]/(output["False-positives"]+output["True-negatives"])
     output["Specificity"] = output["True-negatives"]/(output["True-negatives"]+output["False-positives"])
     output["F2-score"] = (1+2 ** 2)*((output["Precision"]*output["Recall"])/((2 ** 2*output["Precision"])+output["Recall"]))
 
     output.index.name = 'Threshold'
     output = output[["True-negatives", "False-positives", "False-negatives", "True-positives",
-                    "Sensitivity", "Specificity", "Precision", "Recall", "F1-score", "F2-score",
+                    "False-positive-rate", "Specificity", "Precision", "Recall", "F1-score", "F2-score",
                      "Accuracy", "Balanced-accuracy"]]
 
     output.to_csv(output_file, header=True, index=True, sep="\t", na_rep="NaN")
