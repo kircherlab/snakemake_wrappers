@@ -44,9 +44,6 @@ def cli(input_file, label_column, pos_label, prediction_column, output_file):
     fpr, tpr, thresholds = metrics.roc_curve(df[label_column], df[prediction_column], pos_label=pos_label)
     auroc = metrics.auc(fpr, tpr)
 
-    precision, recall, thresholds = metrics.precision_recall_curve(
-        df[label_column], df[prediction_column], pos_label=pos_label
-    )
     auprc = metrics.average_precision_score(df[label_column], df[prediction_column], pos_label=pos_label)
 
     pd.DataFrame(

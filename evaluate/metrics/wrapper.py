@@ -80,7 +80,7 @@ else:
 # running the shell
 shell(
     """
-    python  {scriptFolder}/auc.py \
+    python  {scriptFolder}/metrics.py \
     --input {snakemake.input} --output {snakemake.output} \
     --label-column {param_label_column} --positive-label {param_positive_label} --prediction-column {param_prediction_column} 
     """
