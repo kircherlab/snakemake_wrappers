@@ -1,0 +1,6 @@
+metric	value
+AUROC	0.750
+AUPRC	0.833
+Accuracy	0.750
+Balanced Accuracy	0.750
+F1-score	0.667
