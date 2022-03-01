@@ -10,3 +10,6 @@ params:
     bind: If set to True, all input files will be bind together. Default false
     arrange: If set arranges (sorts) the table onb this collumn
     method: The method used for correlation. default spearman
+    order: When true order values by hclust. Default false
+    xlab: Add this x-lab label
+    ylab: Add this y-lab label

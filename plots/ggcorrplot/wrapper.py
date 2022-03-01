@@ -33,10 +33,11 @@ if "columns" in snakemake.params.keys():
 else:
     param_columns = ""
 
+param_bind = "" 
 if "bind" in snakemake.params.keys():
-    param_bind = True
-else:
-    param_bind = False
+    if snakemake.params["bind"]:
+        param_bind = "--bind" 
+        
 
 if "arrange" in snakemake.params.keys():
     param_arrange = "--arrange %s" % snakemake.params["arrange"]
@@ -48,6 +49,21 @@ if "method" in snakemake.params.keys():
 else:
     param_method = "spearman"
 
+if "xlab" in snakemake.params.keys() and snakemake.params["xlab"] != "":
+    param_xlab = "--xlab %s " % snakemake.params["xlab"]
+else:
+    param_xlab = ""
+
+if "ylab" in snakemake.params.keys() and snakemake.params["ylab"] != "":
+    param_ylab = "--ylab %s " % snakemake.params["ylab"]
+else:
+    param_ylab = ""
+
+param_order = ""
+if "order" in snakemake.params.keys():
+    if snakemake.params["order"]:
+        param_order = "--order" 
+
 
 input = ",".join(snakemake.input)
 
@@ -55,7 +71,7 @@ input = ",".join(snakemake.input)
 shell(
     """
     Rscript {scriptFolder}/ggcorrplot.R \
-    {param_columns} {param_bind} {param_arrange} {param_method} \
+    {param_columns} {param_bind} {param_arrange} {param_method} {param_ylab} {param_xlab} \
     --input {input} \
     --output {snakemake.output} 
     """

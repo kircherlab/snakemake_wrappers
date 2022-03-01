@@ -7,7 +7,7 @@ option_list <- list(
         help = "Input table. Multiple tables sebarated by comma.",
         dest = "input"),
     make_option(c("-c", "--column"), type = "character",
-        help = "Columns for correlations, separated by comma. If not set all are used."),
+        help = "Columns for correlations, separated by comma. If not set all are used."), # nolint
     make_option(c("-b", "--bind"), action = "store_true", default = FALSE,
         help = "Bind colum."),
     make_option(c("-a", "--arrange"), type = "character",
@@ -15,6 +15,12 @@ option_list <- list(
     make_option(c("-m", "--method"), type = "character",
         help = "Correlation method. pearson or spearman (Optional default [%default])",# nolint
         default = "spearman"),
+    make_option(c("-x", "--xlab"), type = "character",
+        help = "Add this x-lab label"),
+    make_option(c("-y", "--ylab"), type = "character",
+        help = "Add this y-lab label"),
+    make_option(c("--order"), action = "store_true", default = FALSE,
+        help = "Use hc clust ordering  (Optional default [%default])"), # nolint
     make_option(c("-o", "--output"), type = "character",
         help = "Output file of the correlation plot")
 )
@@ -69,7 +75,20 @@ if (nrow(input_b) == 0) {
 colors <- c("#7570b3", "white", "#d95f02")
 
 p <- ggcorrplot(correlation, method = "square",
-        hc.order = TRUE,   colors = colors) +
+        hc.order = opt$order, colors = colors,
+        legend.title = str_to_title(paste(opt$method, "\ncorrelation"))) +
         theme(axis.text = element_text(colour = "black"))
+
+if ("xlab" %in% names(opt)) {
+  p <- p + ggplot2::labs(x = opt$xlab) + ggplot2::theme(
+    axis.title.x = element_text(angle = 0)
+  )
+}
+if ("ylab" %in% names(opt)) {
+  p <- p + ggplot2::labs(y = opt$ylab) + ggplot2::theme(
+    axis.title.y = element_text(angle = 90)
+  )
+}
+
 
 ggsave(p, file = opt$output, width = 10.0, height = 10.0)
