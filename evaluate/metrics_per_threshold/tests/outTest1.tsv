@@ -1,5 +1,5 @@
-Threshold	True-negatives	False-positives	False-negatives	True-positives	Sensitivity	Specificity	Precision	Recall	F1-score	F2-score	Accuracy	Balanced-accuracy
+Threshold	True-negatives	False-positives	False-negatives	True-positives	False-positive-rate	Specificity	Precision	Recall	F1-score	F2-score	Accuracy	Balanced-accuracy
 0.1	0	2	0	2	1.0	0.0	0.5	1.0	0.6666666666666666	0.8333333333333333	0.5	0.5
-0.35	1	1	0	2	1.0	0.5	0.6666666666666666	1.0	0.8	0.9090909090909092	0.75	0.75
+0.35	1	1	0	2	0.5	0.5	0.6666666666666666	1.0	0.8	0.9090909090909092	0.75	0.75
 0.4	1	1	1	1	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5
-0.8	2	0	1	1	0.5	1.0	1.0	0.5	0.6666666666666666	0.5555555555555556	0.75	0.75
+0.8	2	0	1	1	0.0	1.0	1.0	0.5	0.6666666666666666	0.5555555555555556	0.75	0.75
