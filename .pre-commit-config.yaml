@@ -1,6 +1,6 @@
 ---
 repos:
     - repo: https://github.com/adrienverge/yamllint
-      rev: v1.26.3 # or specific tag
+      rev: v1.26.3  # or specific tag
       hooks:
           - id: yamllint
