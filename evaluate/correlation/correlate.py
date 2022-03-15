@@ -41,7 +41,7 @@ def cli(file_a, file_b, values, output_file):
     output = []
     methods = pd.Series(['pearson', 'spearman'], name="metric")
     for method in methods:
-        if df.drop_duplicates(keep=False).size == 0:
+        if df.drop_duplicates().shape[0] == 1:
             output.append(1.0)
         else:
             output.append(df.corr(method).loc["A", "B"])
