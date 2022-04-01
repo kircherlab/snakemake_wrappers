@@ -14,3 +14,5 @@ exclude =
     dist
 max-complexity = 10
 max-line-length = 127
+show-source = true
+statistics = True
