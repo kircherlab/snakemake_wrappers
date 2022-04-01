@@ -40,7 +40,7 @@ else:
     param_header = "--no-header"
 
 if "chunksize" in snakemake.params.keys():
-    param_chunksize = "--chunksize" if snakemake.params["chunksize"]
+    param_chunksize = "--chunksize %d" % snakemake.params["chunksize"]
 else:
     param_chunksize = "--chunksize 10000"
 
