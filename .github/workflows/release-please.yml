@@ -13,4 +13,4 @@ jobs:
         id: release
         with:
           release-type: simple
-          package-name: kircherlab snakemake wrappers
+          package-name: kircherlab_snakemake_wrappers
