@@ -38,14 +38,31 @@ if "yname" in snakemake.params.keys():
 else:
     param_yname = ""
 
+if "type" in snakemake.params.keys():
+    param_type = snakemake.params["type"]
+else:
+    raise MissingParameterException("type")
 
+if "names" in snakemake.params.keys():
+    param_name = "--name '%s'" % ",".join(snakemake.params["names"])
+else:
+    raise MissingParameterException("names")
+
+inputs = ",".join(snakemake.input)
+
+
+if len(snakemake.log) > 0:
+    log = "&>  %s" % snakemake.log[0]
+else:
+    log = ""
 
 # running the shell
 shell(
     """
-    Rscript {scriptFolder}/pre_re_f1_f2.R \
-    {param_xname} {param_yname} \
-    --input {snakemake.input} \
-    --output {snakemake.output}
+    Rscript {scriptFolder}/pr_roc_curve.R \
+    {param_xname} {param_yname} {param_name}\
+    --type {param_type} \
+    --input {inputs} \
+    --output {snakemake.output} {log}
     """
 )
