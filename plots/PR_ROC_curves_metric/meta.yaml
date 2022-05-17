@@ -4,7 +4,9 @@ description: Using the result of evaluate/metrics_per_threshold to create a Prec
 authors:
     - Max Schubach
 input: TSV tables with headers from evaluate/metrics_per_threshold
-output: The plot
+output: The PR or ROC plot
 params:
     xname: Name of the x-lab (default Score)
     yname: Name of the y-lab (default Value)
+    type: Type of plot that should be generated, ROC or PR
+    names: List of names that should be uses as fill variable. Same length as input
