@@ -71,6 +71,7 @@ getPlot <- function(plot) {
         "geom_boxplot"=geom_boxplot(aes_string(y=opt$value,fill=opt$fill)),
         "geom_col"=geom_col(aes_string(x=opt$variable,y=opt$value,fill=opt$fill,group=opt$group)),
         "geom_path"=geom_path(aes_string(x=opt$variable,y=opt$value,group=opt$group,fill=opt$fill,colour=opt$colour)),
+        "geom_density"=geom_density(aes_string(y=opt$value,fill=opt$fill,group=opt$group))
     )
     return(result)
 }
