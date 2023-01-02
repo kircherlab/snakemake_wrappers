@@ -10,3 +10,4 @@ params:
     yname: Name of the y-lab (default Value)
     type: Type of plot that should be generated, ROC or PR
     names: List of names that should be uses as fill variable. Same length as input
+    labelcolumns: number of columns for labels

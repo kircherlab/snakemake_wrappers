@@ -1,11 +1,8 @@
 import click
 import numpy as np
-import json
 import csv
 import gzip
 import math
-
-import copy
 
 import tensorflow as tf
 
