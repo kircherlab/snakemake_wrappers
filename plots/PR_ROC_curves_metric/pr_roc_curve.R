@@ -1,4 +1,3 @@
-library(ggplot2)
 library(tidyverse)
 library(reshape2)
 library(optparse)
@@ -20,6 +19,10 @@ option_list <- list(
     make_option(c("-y", "--yname"), type = "character",
         default = "True positive rate",
         help = "Y-lab dname."),
+    make_option(c("-c", "--labelcolumns"), type = "integer",
+        default = 1,
+        help = "Number of columns for label",
+        dest = "label_columns"),
     make_option(c("-o", "--output"), type = "character",
         help = "Output file of the plot")
 )
@@ -82,7 +85,8 @@ switch(opt$type,
 
 p <- p + geom_line(size = size_geom_line) +
 standard_style +
-guides(col = guide_legend(nrow = length(names), byrow = FALSE)) +
+guides(col = guide_legend(nrow = ceiling(length(names) / opt$label_columns),
+    ncol = opt$label_columns, byrow = FALSE)) +
 scale_colour_manual(values = colours_nice)
 
-ggsave(p, file = opt$output, width = 10.0, height = 10)
+ggsave(p, file = opt$output, width = 12.0, height = 12)

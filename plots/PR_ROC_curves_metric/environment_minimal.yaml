@@ -1,0 +1,8 @@
+---
+channels:
+    - bioconda
+    - conda-forge
+dependencies:
+    - r-optparse
+    - r-tidyverse
+    - r-reshape2

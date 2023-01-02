@@ -8,4 +8,4 @@ dependencies:
     - numpy
     - pybedtools
     - seqiolib=0.2.1
-    - tensorflow-gpu
+    - tensorflow
