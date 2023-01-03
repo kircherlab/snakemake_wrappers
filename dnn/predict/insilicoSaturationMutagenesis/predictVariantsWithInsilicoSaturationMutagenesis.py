@@ -190,6 +190,8 @@ def cli(regions_file, model_file, weights_file, reference_file, genome_file, alt
                             satMutSequence.getSequence()))
                     # predict
                     prediction = model.predict(np.array(X))
+                    if isinstance(prediction, list):
+                        prediction = np.column_stack(prediction)
                     n_tasks = np.shape(prediction)[1]
 
                     # initialize write once
