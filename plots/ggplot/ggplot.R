@@ -1,6 +1,5 @@
 library(optparse)
 library(tidyverse)
-library(gridExtra)
 
 
 
@@ -17,12 +16,8 @@ option_list <- list(
         help="Variable for group"),
     make_option(c("-k", "--colour"), type="character",
         help="Variable for colour"),
-    make_option(c("-c", "--cols"), type="character",
-        help="Variable for cols"),
-    make_option(c("-r", "--rows"), type="character",
-        help="Variable for row"),
     make_option(c("-p", "--plot"), type="character",
-        help="Type of plot, Only geom_boxplot, geom_path and geom_col are supported"),
+        help="Type of plot, Only geom_boxplot, geom_path, geom_density and geom_col are supported"),
     make_option(c("-o", "--output"), type="character",
         help="Output of the plot")
 )
@@ -53,25 +48,13 @@ data <- read.delim(opt$input,stringsAsFactors=TRUE, header=TRUE) #%>% replace_na
 
 data[,opt$fill] <- as.factor(data[,opt$fill])
 
-getFacetGrid <- function(){
-    if ("cols" %in% names(opt) && "rows" %in% names(opt)){
-        return(facet_grid(cols = vars(data[[opt$cols]]), rows= vars(data[[opt$rows]])))
-    } else if ("cols" %in% names(opt)) {
-        return(facet_grid(cols = vars(data[[opt$cols]])))
-    } else if ("rows" %in% names(opt)) {
-        return(facet_grid(rows = vars(data[[opt$rows]])))
-    }
-}
-
-
-
 getPlot <- function(plot) {
     result = switch(
         plot,
         "geom_boxplot"=geom_boxplot(aes_string(y=opt$value,fill=opt$fill)),
         "geom_col"=geom_col(aes_string(x=opt$variable,y=opt$value,fill=opt$fill,group=opt$group)),
         "geom_path"=geom_path(aes_string(x=opt$variable,y=opt$value,group=opt$group,fill=opt$fill,colour=opt$colour)),
-        "geom_density"=geom_density(aes_string(x=opt$value,fill=opt$fill,group=opt$group))
+        "geom_density"=geom_density(aes_string(x=opt$value,fill=opt$fill,group=opt$group,colour=opt$colour))
     )
     return(result)
 }
@@ -79,8 +62,6 @@ getPlot <- function(plot) {
 p <- data %>%
     ggplot() +
     getPlot(opt$plot) +
-    ylim(min(data[[opt$value]]),max(data[[opt$value]])) +
-    theme_bw() + theme(legend.position="top") + 
-    getFacetGrid()
+    theme_bw() + theme(legend.position="top")
 
-ggsave(opt$output, plot=p, height=50,width=20, limitsize = FALSE)
+ggsave(opt$output, plot=p, height=12,width=12)

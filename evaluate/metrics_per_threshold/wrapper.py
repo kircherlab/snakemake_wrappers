@@ -75,10 +75,20 @@ if "prediction_column" in snakemake.params.keys():
 else:
     raise MissingParameterException("prediction_column")
 
-if "prediction_column" in snakemake.params.keys():
+if "use_only_positive_thresholds" in snakemake.params.keys() and snakemake.params["use_only_positive_thresholds"]:
+    param_useOnlyPositiveTrehshold = "--only-positive-thresholds"
+else:
+    param_useOnlyPositiveTrehshold = "--all-thresholds"
+
+if "decimals" in snakemake.params.keys():
     param_decimals = "--decimals %s" % snakemake.params["decimals"]
 else:
     param_decimals = ""
+
+if "steps" in snakemake.params.keys():
+    param_steps = "--steps %s" % snakemake.params["steps"]
+else:
+    param_steps = ""
     
  
 
@@ -88,6 +98,6 @@ shell(
     """
     python  {scriptFolder}/metrics_per_threshold.py \
     --input {snakemake.input} --output {snakemake.output} \
-    --label-column {param_label_column} --positive-label {param_positive_label} --prediction-column {param_prediction_column} {param_decimals}
+    --label-column {param_label_column} --positive-label {param_positive_label} --prediction-column {param_prediction_column} {param_useOnlyPositiveTrehshold} {param_steps} {param_decimals}
     """
 )

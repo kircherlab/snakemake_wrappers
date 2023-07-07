@@ -1,6 +1,5 @@
 import click
 import numpy as np
-import json
 import csv
 import gzip
 import math
@@ -9,7 +8,7 @@ import copy
 
 import tensorflow as tf
 
-from seqiolib import Sequence, Interval, Variant, Encoder, VariantType
+from seqiolib import Interval, Encoder, VariantType
 from seqiolib import utils
 
 
@@ -74,19 +73,19 @@ def cli(variants_file, model_file, weights_file, reference_file, genome_file, al
                 sequence.getSequence()))
             i += 1
         prediction = model.predict(np.array(X))
-        return(prediction)
+        return (prediction)
 
     def extendIntervals(intervals, region_length, genome_file):
         left = math.ceil((region_length-1)/2)
         right = math.floor((region_length-1)/2)
         click.echo("Extending intervals left=%d, right=%d..." % (left, right))
-        return(list(map(pybedtoolsIntervalToInterval, intervals.slop(r=right, l=left, g=str(genome_file)))))
+        return (list(map(pybedtoolsIntervalToInterval, intervals.slop(r=right, l=left, g=str(genome_file)))))
 
     def variantToPybedtoolsInterval(variant):
-        return(pybedtools.Interval(variant.contig, variant.position-1, variant.position))
+        return (pybedtools.Interval(variant.contig, variant.position-1, variant.position))
 
     def pybedtoolsIntervalToInterval(interval_pybed):
-        return(Interval(interval_pybed.chrom, interval_pybed.start+1, interval_pybed.stop))
+        return (Interval(interval_pybed.chrom, interval_pybed.start+1, interval_pybed.stop))
 
     if fileType == "TSV":
         fileType = utils.FileType.TSV

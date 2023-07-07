@@ -3,6 +3,5 @@ channels:
     - defaults
 dependencies:
     - r-optparse
-    - r-gridextra
     - r-tidyverse
     - r-svglite

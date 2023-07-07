@@ -1,0 +1,10 @@
+---
+name: sklearn preprocessing scale wrapper
+description: scales given columns. grouping can be used
+authors:
+    - Max Schubach
+input: TSV table for scaling
+output: TSV table with scaled result
+params:
+    id_vars: columns that should be used for scaling
+    group_vars: (Optional) Grouping on these columns

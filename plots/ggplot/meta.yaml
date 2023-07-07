@@ -1,0 +1,14 @@
+---
+name: plot in a grid
+description: making grid plot by defining coluns and rows
+authors:
+    - Max Schubach
+input: file with variable and value
+output: final plot
+params:
+    x: x-value
+    y: y-value
+    fill: fill variable
+    group: group column
+    colour: colur column
+    plot: type of plot, like geom_boxplot and geom_col

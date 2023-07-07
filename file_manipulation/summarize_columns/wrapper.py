@@ -5,6 +5,7 @@ __license__ = "MIT license"
 
 import os
 from snakemake.shell import shell
+import numpy as np
 
 scriptFolder = os.path.dirname(os.path.abspath(__file__))
 
@@ -23,21 +24,29 @@ class MissingParameterException(Exception):
         self.parameter = parameter
 
     def __str__(self):
-        return("Parameter %s is missing!" % (self.parameter))
+        return ("Parameter %s is missing!" % (self.parameter))
 
 
 # Checking parameters, remove else when parameter
 # is not necessary and add a default value
 
 if "columns" in snakemake.params.keys():
-    param_columns = " ".join(
-        ["--column %s" % i for i in snakemake.params["columns"]])
+    if len(np.array(snakemake.params["columns"]).shape) == 2:
+        param_columns = " ".join(
+            ["--column %s" % ",".join(i) for i in snakemake.params["columns"]])
+    else:
+        param_columns = " ".join(
+            ["--column %s" % i for i in snakemake.params["columns"]])
 else:
     raise MissingParameterException("columns")
 
 if "new_columns" in snakemake.params.keys():
-    param_new_columns = " ".join(
-        ["--new-column-name %s" % i for i in snakemake.params["new_columns"]])
+    if len(np.array(snakemake.params["new_columns"]).shape) == 2:
+        param_new_columns = " ".join(
+            ["--new-column-name %s" % ",".join(i) for i in snakemake.params["new_columns"]])
+    else:
+        param_new_columns = " ".join(
+            ["--new-column-name %s" % i for i in snakemake.params["new_columns"]])
 else:
     raise MissingParameterException("new_columns")
 

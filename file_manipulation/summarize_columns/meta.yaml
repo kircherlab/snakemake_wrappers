@@ -1,12 +1,12 @@
 ---
 name: Summarize columns
-description: Creating a new column out of other columns using multiple operations (like mean, min, max)
+description: Creating a new column out of other columns using multiple operations (like mean, min, max). When using an 2d array operation xwould be done with [0,0], [1,0] ,...[n,0]. Operation y with [0,1], [0,2],..[0,n]
 authors:
     - Max Schubach
 input: Input file is tsv table with headers.
 output: Output file is tsv table with headers.
 params:
-    columns: columns used for operations generation. Must be list
-    new_columns: Name of the new columns. Must be a list of the same length than operations.
+    columns: columns used for operations generation. Must be list (1 or 2d array)
+    new_columns: Name of the new columns. Must be a list of the same length than operations. (1 or 2d array)
     operations: Operation done on the columns. Must be a list of the same length than new_columns.
         Possible operations 'abs', 'max', 'min', 'mean', 'std', 'abs_max', 'abs_mean', 'abs_min', 'abs_std'

@@ -86,3 +86,10 @@ guides(col = guide_legend(nrow = length(names), byrow = FALSE)) +
 scale_colour_manual(values = colours_nice)
 
 ggsave(p, file = opt$output, width = 10.0, height = 10)
+
+# p <- p + geom_line(size = size_geom_line) +
+# standard_style +
+# guides(col = guide_legend(nrow = 3, byrow = FALSE)) +
+# scale_colour_manual(values = colours_nice)
+
+# ggsave(p, file = opt$output, width = 12.0, height = 12.0)
