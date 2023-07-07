@@ -38,6 +38,11 @@ if "yname" in snakemake.params.keys():
 else:
     param_yname = ""
 
+if "labelcolumns" in snakemake.params.keys():
+    param_labelcolumns = "--labelcolumns %s" % snakemake.params["labelcolumns"]
+else:
+    param_labelcolumns = ""
+
 if "type" in snakemake.params.keys():
     param_type = snakemake.params["type"]
 else:
@@ -60,7 +65,7 @@ else:
 shell(
     """
     Rscript {scriptFolder}/pr_roc_curve.R \
-    {param_xname} {param_yname} {param_name}\
+    {param_xname} {param_yname} {param_name} {param_labelcolumns}\
     --type {param_type} \
     --input {inputs} \
     --output {snakemake.output} {log}
