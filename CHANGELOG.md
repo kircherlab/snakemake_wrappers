@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/kircherlab/snakemake_wrappers/compare/v1.1.0...v1.2.0) (2025-01-21)
+
+
+### Features
+
+* PR/ROC ([cbc5c2b](https://github.com/kircherlab/snakemake_wrappers/commit/cbc5c2b5bfd0e72dc7908d098490942efa991914))
+
 ## [1.1.0](https://github.com/kircherlab/snakemake_wrappers/compare/v1.0.0...v1.1.0) (2022-05-17)
 
 
